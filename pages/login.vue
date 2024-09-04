@@ -93,7 +93,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .google-login {
   text-align: center; 
@@ -121,7 +120,7 @@ export default {
 .toggle-password {
   padding: 10px;
   cursor: pointer;
-  background-color: #f9f9f9; 
+  background-color: white; 
 }
 .futa-group{
   margin-top: 20px;
