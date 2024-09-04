@@ -4,11 +4,11 @@
   <div class="options-box">
     <div class="options">
       <label>
-        <input type="radio" name="trip" value="one-way">
+        <input type="radio" name="trip" value="one-way" v-model="isRoundTrip" @change="toggleRoundTrip">
         Một chiều
       </label>
       <label>
-        <input type="radio" name="trip" value="round-trip">
+        <input type="radio" name="trip" value="round-trip" v-model="isRoundTrip" @change="toggleRoundTrip">
         Khứ hồi
       </label>
         <button class="guide-button">Hướng dẫn đặt vé</button>
@@ -16,26 +16,30 @@
     <div class="form-fields">
         <div class="field-group">
           <label for="departure">Điểm đi</label>
-          <input type="text" id="departure" placeholder="Nhập điểm đi" class="field">
+          <input type="text" id="departure" placeholder="Chọn điểm đi" class="field" v-model="departure">
         </div>
         <button class="switch-button" @click="switchFields">
           <img src="/images/switch.svg" alt="Switch">
         </button>
         <div class="field-group">
           <label for="destination">Điểm đến</label>
-          <input type="text" id="destination" placeholder="Nhập điểm đến" class="field">
+          <input type="text" id="destination" placeholder="Chọn điểm đến" class="field" v-model="destination">
         </div>
         <div class="field-group">
           <label for="departure-date">Ngày đi</label>
-          <input type="date" id="departure-date" class="field">
+          <input type="date" id="departure-date" class="field" v-model="departureDate">
+        </div>
+        <div class="field-group" v-if="isRoundTrip === 'round-trip'">
+          <label for="return-date">Ngày về</label>
+          <input type="date" id="return-date" placeholder="Thêm ngày về" class="field" v-model="returnDate">
         </div>
         <div class="field-group">
           <label for="ticket-number">Số vé</label>
-          <input type="number" id="ticket-number" placeholder="Nhập số vé" class="field">
+          <input type="number" id="ticket-number" placeholder="Nhập số vé" class="field" v-model="ticketNumber">
         </div>
       </div>
-      <button class="search"> Tìm chuyến xe</button>
-  </div>
+      <NuxtLink to="/book_tickets" class="search"> Tìm chuyến xe </NuxtLink>
+   </div>
       <div class="Sales">
         <h1>KHUYẾN MÃI NỔI BẬT</h1>
         <div class="flase-Sales">
@@ -96,10 +100,25 @@ export default {
   data() {
     return {
       departure: '',
-      destination: ''
+      destination: '',
+      departureDate: '',
+      returnDate: '',
+      ticketNumber: '',
+      isRoundTrip: 'one-way' // Mặc định là một chiều
     };
   },
   methods: {
+    toggleRoundTrip() {
+      // Xử lý logic nếu cần thiết khi chuyển giữa các chế độ "Một chiều" và "Khứ hồi"
+      if (this.isRoundTrip === 'one-way') {
+        this.returnDate = ''; // Reset ngày về nếu chuyển sang "Một chiều"
+      }
+    },
+    switchFields() {
+      const temp = this.departure;
+      this.departure = this.destination;
+      this.destination = temp;
+    },
     switchFields() {
       const temp = this.departure;
       this.departure = this.destination;
@@ -196,7 +215,7 @@ margin-left: 40px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
-.search{
+.search {
   width: 250px;
   height: 45px;
   border: none;
@@ -206,7 +225,12 @@ margin-left: 40px;
   font-weight: bold;
   align-self: center;
   font-size: 20px;
+  display: flex; 
+  justify-content: center;
+  align-items: center; 
+  text-decoration: none;
 }
+
 .switch-button {
   background-color: transparent;
   border: none;
@@ -234,6 +258,7 @@ margin-left: 40px;
     display: flex;
     align-items: center;
     gap: 15px; 
+    flex-wrap: wrap;
 }
 .field-group label {
   margin-bottom: 5px; 
