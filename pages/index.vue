@@ -16,14 +16,36 @@
     <div class="form-fields">
         <div class="field-group">
           <label for="departure">Điểm đi</label>
-          <input type="text" id="departure" placeholder="Chọn điểm đi" class="field" v-model="departure">
+          <input type="text" id="departure" placeholder="Chọn điểm đi" class="field" v-model="departure" @input="searchLocation($event)">
+          <ul v-if="listDeparture.length" class="list-adress">
+            <li
+              id="departure"
+              v-for="(suggestion, index) in listDeparture"
+              :key="index"
+              @click="getAdressLi($event, suggestion)"
+            >
+              <img src="/images/end-coords-icon.png" alt="">
+              {{ suggestion }}
+            </li>
+          </ul>
         </div>
         <button class="switch-button" @click="switchFields">
           <img src="/images/switch.svg" alt="Switch">
         </button>
         <div class="field-group">
           <label for="destination">Điểm đến</label>
-          <input type="text" id="destination" placeholder="Chọn điểm đến" class="field" v-model="destination">
+          <input type="text" id="destination" placeholder="Chọn điểm đến" class="field" v-model="destination" @input="searchLocation($event)">
+          <ul v-if="listDestination.length" class="list-adress">
+            <li
+              id="destination"
+              v-for="(suggestion, index) in listDestination"
+              :key="index"
+              @click="getAdressLi($event, suggestion)"
+            >
+              <img src="/images/end-coords-icon.png" alt="">
+              {{ suggestion }}
+            </li>
+          </ul>
         </div>
         <div class="field-group">
           <label for="departure-date">Ngày đi</label>
@@ -38,7 +60,13 @@
           <input type="number" id="ticket-number" placeholder="Nhập số vé" class="field" v-model="ticketNumber">
         </div>
       </div>
-      <NuxtLink to="/book_tickets" class="search"> Tìm chuyến xe </NuxtLink>
+
+      <!-- Xử lý lấy toạ độ js -->
+      <button class="search" @click="handleSubmit()"> Tìm chuyến xe </button>
+      <span id="distance">Khoảng cách: ... km <span style="margin: 0 30px;">|</span> Thời gian dự kiến: ...</span>
+      
+      <div class="map" id="map" style="width: 1078px; height: 540px; overflow: hidden"></div>
+      <!-- Xử lý lấy toạ độ js -->
    </div>
       <div class="Sales">
         <h1>KHUYẾN MÃI NỔI BẬT</h1>
@@ -95,15 +123,28 @@
 </template>
 
 <script>
+import jsonData from '@/static/danangAdress.json';
+
 export default {
   data() {
     return {
       departure: '',
       destination: '',
-      departureDate: '',
+      departureDate: this.getTodayDate(),
       returnDate: '',
-      ticketNumber: '',
-      isRoundTrip: 'one-way' // Mặc định là một chiều
+      ticketNumber: 1,
+      isRoundTrip: 'one-way', // Mặc định là một chiều
+
+      // Xử lý lấy toạ độ js
+      location: {
+        distance: 0,
+        duration: 0,
+        route: []
+      },
+      map: null,
+      listDeparture: [], // Các gợi ý điểm đi
+      listDestination: [], // Các gợi ý điểm đến
+      previousDestination: '',
     };
   },
   methods: {
@@ -122,12 +163,208 @@ export default {
       const temp = this.departure;
       this.departure = this.destination;
       this.destination = temp;
+    },
+    getTodayDate() {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    },
+
+    // Xử lý lấy toạ độ js
+    // Gọi API tìm kiếm địa điểm
+    async searchLocation(event) {      
+      //Xử lý format chuỗi
+      function removeDiacritics(str) {
+        return str.normalize("NFD")
+          .toLowerCase()
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/\s+/g, ' ')
+          .replace(/đ/g, "d")
+          .replace(/ê/g, "e")
+          .replace(/ô/g, "o")
+          .replace(/ơ/g, "o")
+          .replace(/ư/g, "u")
+          .trim()
+      }
+
+      //Xử lý lấy danh sách tất cả phường        
+      const input = event.target.id === "departure" ? this.departure.split(',') : this.destination.split(',')
+      let listResult = []
+      for (let i = 0; i < input.length; i++) {
+        if(input.length === 0 || input[i] === ',') {
+          return
+        }
+        else {
+          jsonData.map(item => {            
+            if(removeDiacritics(item.Name).includes(removeDiacritics(input[i]))) {
+              listResult.push(`${input[0]}, ${item.Name}`)
+            }
+          })
+        }               
+      }
+      event.target.id === "departure" ? this.listDeparture = listResult : this.listDestination = listResult
+      
+    },
+    getAdressLi(event, value) {                 
+      event.target.id === "departure" ? this.departure = value : this.destination = value
+      event.target.id === "departure" ? this.listDeparture = [] : this.listDestination = []
+    },
+    //Tìm dường
+    async handleSubmit() {
+      //Xoá danh sách các địa chỉ đã đề xuất trong ô điểm đi và điểm đến
+      this.listDeparture = []
+      this.listDestination = []
+
+      //Xử lí tìm đường
+      const distanceElement = document.getElementById('distance');
+      distanceElement.textContent = `Đang tìm đường đi ngắn nhất...`;
+
+      const startCoords = await this.getCoordinates(this.departure);
+      const endCoords = await this.getCoordinates(this.destination);
+      
+      if (startCoords && endCoords) {
+        const data = await this.calculateDistance(startCoords, endCoords);
+        distanceElement.textContent = `Khoảng cách: ${data.distance} km | Thời gian dự kiến: ${data.duration}`;
+
+        this.initializeMap(startCoords, endCoords, data.route);
+      } else if(!startCoords){
+        distanceElement.textContent = 'Không được để trống điểm đi';
+      } else {
+        distanceElement.textContent = 'Không được để trống điểm đến';
+      }
+    },
+
+    //format lại thời gian
+    formatDuration(seconds) {
+      const curentSeconds = seconds / 4 //Vì trung bình đi 1km mất 12 phút quá lâu
+      const minutes = Math.floor(curentSeconds / 60);
+      const remainingSeconds = Math.floor(curentSeconds % 60);
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+
+      if (hours > 0) {
+          return `${hours} giờ ${remainingMinutes} phút ${remainingSeconds} giây`;
+      } else if (minutes > 0) {
+          return `${minutes} phút ${remainingSeconds} giây`;
+      } else {
+          return `${remainingSeconds} giây`;
+      }
+    },
+
+    //chuyển địa chỉ chữ sang toạ độ
+    async getCoordinates(adress) {
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(adress)}`);
+      const data = await response.json();
+      if (data.length > 0) {
+          return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+      }
+      return null;
+    },
+
+    //từ toạ độ đo khoảng cách và thời gian
+    async calculateDistance([startLat, startLon], [endLat, endLon]) {
+      const apiKey = '5b3ce3597851110001cf624819d3fdc94c414287843eef76556e105f';
+      const response = await fetch(`https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${apiKey}&start=${startLon},${startLat}&end=${endLon},${endLat}`);
+      const data = await response.json();
+      if (data.features && data.features.length > 0) {
+          const route = data.features[0].geometry.coordinates.map(coord => [coord[1], coord[0]])
+          this.location = {
+              distance: (data.features[0].properties.summary.distance / 1000).toFixed(2),
+              duration: this.formatDuration(data.features[0].properties.summary.duration),
+              route
+          };
+          return this.location
+      }
+      return null;
+    },
+
+    // hiển thị ra map    
+    initializeMap(startCoords, endCoords, route) {  
+      const mapElement = document.getElementById('map');
+
+      if (this.map) {
+        this.map.remove();
+      }
+
+      const script = document.createElement('script');
+      script.src = "https://unpkg.com/leaflet/dist/leaflet.js";
+      script.onload = () => {
+        this.map = L.map(mapElement).setView(startCoords, 14);
+  
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(this.map);
+
+        // Tạo icon
+        const startCoordsIcon = L.icon({
+          iconUrl: '/images/start-coords-icon.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+          iconSize: [18, 18], // Kích thước của icon
+          iconAnchor: [12, 18], // Điểm neo của icon
+          popupAnchor: [1, -20], // Điểm neo của popup
+          shadowSize: [10, 10]  // Kích thước của bóng
+        });
+        const endCoordsIcon = L.icon({
+          iconUrl: '/images/end-coords-icon.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+          iconSize: [25, 41], // Kích thước của icon
+          iconAnchor: [12, 41], // Điểm neo của icon
+          popupAnchor: [1, -34], // Điểm neo của popup
+          shadowSize: [41, 41]  // Kích thước của bóng
+        });
+        const shiper = L.icon({
+          iconUrl: '/images/shiper-red.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+          iconSize: [60, 60], // Kích thước của icon
+          iconAnchor: [12, 41], // Điểm neo của icon
+          popupAnchor: [1, -34], // Điểm neo của popup
+          shadowSize: [41, 41]  // Kích thước của bóng
+        });
+  
+        L.marker(startCoords, { icon: startCoordsIcon }).addTo(this.map).bindPopup('Điểm đón').closePopup();
+        L.marker(endCoords, { icon: endCoordsIcon }).addTo(this.map).bindPopup('Điểm đến').closePopup();
+        let currentRoute = 0
+        let currentMarker  = null
+        if(route.length > 0) {
+          let intervalID = setInterval(() => {
+            if(currentRoute < route.length - 1) {
+              currentRoute++
+              if(currentMarker) {
+                 this.map.removeLayer(currentMarker);
+              }
+              currentMarker = L.marker(route[currentRoute], { icon: shiper }).addTo(this.map);
+            } else {
+              clearInterval(intervalID)
+              alert("Lụm tiền!!!")
+            }
+          }, 100)
+        }
+  
+        L.polyline(route, { color: 'blue' }).addTo(this.map);
+      }
+      document.head.appendChild(script);      
+    },
+  },
+  mounted(){
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const latitude = position.coords.latitude //kinh độ
+          const longitude = position.coords.longitude //vĩ độ
+
+          this.initializeMap([latitude,longitude], [latitude,longitude], [])
+        }
+      )
     }
   }
 }
 </script>
 
 <style>
+@import url('https://unpkg.com/leaflet/dist/leaflet.css'); /*Xử lý lấy toạ độ css*/
+
 .futa-group{
   margin-top: 20px;
   color:rgb(8, 83, 8) ;
@@ -249,6 +486,7 @@ margin-left: 40px;
   height: 40px;
 }
 .field-group {
+  position: relative;
   display: flex;
   flex-direction: column; 
   flex: 1;
@@ -269,6 +507,30 @@ margin-left: 40px;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 16px;
+}
+.list-adress {
+  position: absolute; 
+  top: 80px; 
+  border: 1px solid #999;
+  list-style: none;
+  border-radius: 2px; 
+  z-index: 99999;
+  background: white; 
+  padding: 0;
+  max-height: 340px;
+  overflow-y: scroll;
+}
+.list-adress>li {
+  line-height: 24px;
+  padding: 5px 10px;
+}
+.list-adress>li:hover {
+  cursor: pointer;
+  background: #f3e8e8;
+}
+.list-adress>li>img {
+  width: 12px;
+  margin-right: 5px;
 }
 .options {
     display: flex;
