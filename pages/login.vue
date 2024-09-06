@@ -61,12 +61,45 @@
             </span>
             <input type="email" placeholder="Nhập địa chỉ email" class="input">
           </div>
+
+          <div class="input-group">
+            <span class="input-icon">
+              <img src="/images/code-solid.svg" alt="Code Icon" class="icon">
+            </span>
+            <input type="code" placeholder="Mã xác nhận" class="input">
+            <div class="code-btn">
+              <button class="get-code-btn">Lấy mã</button>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <span class="input-icon">
+              <img src="/images/user-regular.svg" alt="Name Icon" class="icon">
+            </span>
+            <input type="name" placeholder="Nhập họ tên" class="input">
+          </div>
+
+          <div class="input-group">
+            <span class="input-icon">
+              <img src="/images/password.svg" alt="Pass Icon" class="icon">
+            </span>
+            <input type="Pass" placeholder="Mật khẩu" class="input">
+          </div>
+
+          <div class="input-group">
+            <span class="input-icon">
+              <img src="/images/password.svg" alt="Password Icon" class="icon">
+            </span>
+            <input type="Password" placeholder="Xác nhận mật khẩu" class="input">
+          </div>
+
           <div>
              <button class="login-1"> Tiếp tục</button>
            </div>
         </div>
       </div>
     </div>
+    
     <div class="futa-group">
         <h1>KẾT NỐI C-MART GROUP</h1>
         <p>Kết nối đa dạng hệ sinh thái C-MART qua App C-MART: 
@@ -81,7 +114,7 @@
 export default {
   data() {
     return {
-      activeTab: 'login', // Tab mặc định
+      activeTab: 'register', // Tab mặc định
       showPassword: false
     };
   },
@@ -94,6 +127,17 @@ export default {
 </script>
 
 <style scoped>
+
+.get-code-btn {
+  background-color: transparent;
+  color:#f94d0a ;
+  border: none;
+  font-weight: bold;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 20px;
+  font-size: 14px;
+}
 .google-login {
   text-align: center; 
   margin-top: 20px; 
@@ -170,6 +214,7 @@ export default {
   border: none;
   outline: none;
   font-size: 16px;
+  padding-right: 80px;
 }
 .icon {
   width: 20px;

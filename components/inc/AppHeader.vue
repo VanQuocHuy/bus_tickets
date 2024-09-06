@@ -14,7 +14,7 @@
             <NuxtLink to="/" class="nav-link nav-text"> Trang Chủ </NuxtLink>
           </li> 
           <li class="nav-item">
-            <NuxtLink to="/schedule" class="nav-link nav-text"> Lịch Trình </NuxtLink>
+            <NuxtLink to="/schedule" class="nav-link nav-text"> Đặt vé xe C-MART </NuxtLink>
           </li>
           <li class="nav-item"> 
             <NuxtLink to="/ticket_search" class="nav-link nav-text"> Tra Cứu Vé </NuxtLink>
