@@ -125,7 +125,6 @@
             </div>
             <div>
               <NuxtLink to="/confirm" class="select-flight"> Chọn chuyến </NuxtLink>
-              <!-- <button class="select-flight">Chọn chuyến</button> -->
             </div>
            </div>
           </div>
@@ -357,12 +356,13 @@
  margin-top: 30px;
  display: flex;
  gap: 25px; 
- background-color: white;
+ background-color: white; 
 }
 .search-filter{
-  border: 1px solid black;
+  border: 1px solid rgb(255, 80, 17);
   border-radius: 10px;
   width: 30%;
+  box-shadow: 0 4px 8px rgba(249, 77, 10, 0.4);
 }
 .search {
    width: 250px;

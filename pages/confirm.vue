@@ -155,7 +155,7 @@
               <input type="text" value="Bến xe Trung tâm Đà Nẵng" readonly>
               <div class="luu-y">
                 <p>Quý khách vui lòng có mặt tại Bến xe/Văn Phòng
-                  <span style="font-weight: bold;">Đà Nẵng</span> <span style="color: red; font-weight: bold;">Trước 17:00 06/09/2024</span>
+                  <span style="font-weight: bold;">Đà Nẵng</span> <span style="color: red; font-weight: bold;">Trước 17:00 07/09/2024</span>
                   để được trung chuyển hoặc kiểm tra thông tin trước khi lên xe.
                 </p>
               </div>
@@ -168,7 +168,7 @@
           </div>
         </div>
         <div class="pay">
-          <button class="thanhtoan">Thanh toán</button>
+          <NuxtLink to="/confirm_infor" class="thanhtoan"> Thanh toán  </NuxtLink>
         </div>
       </div>
     </div>
@@ -179,13 +179,55 @@
             <h3>Thông tin lượt đi</h3>
           </div>
           <hr class="lane">
-          <div>
-            123
+          <div class="trip-in4">
+            <p>Tuyến xe</p>
+            <span>Đà Nẵng - Đắk Nông</span>
           </div>
+
+          <div class="trip-in4">
+            <p>Thời gian xuất bến</p>
+            <span>17:15 07/09/2024</span>
+          </div>
+
+          <div class="trip-in4">
+            <p>Số lượng ghế</p>
+            <span>0 Ghế</span>
+          </div>
+
+          <div class="trip-in4">
+            <p>Số ghế</p>
+            <span></span>
+          </div>
+
+          <div class="trip-in4">
+            <p>Điểm trả khách</p>
+            
+          </div>
+
+          <div class="trip-in4">
+            <p>Tổng tiền lượt đi</p>
+            <span>0đ</span>
+          </div>
+
         </div>
         <div class="price">
           <div class="gia">
             <h3>Chi tiết giá</h3>
+          <div class="trip-in4">
+            <p>Giá vé lượt đi</p>
+            <span>0đ</span>
+          </div>
+
+          <div class="trip-in4">
+            <p>Phí thanh toán</p>
+            <span>0đ</span>
+          </div>
+            <hr class="lane">
+
+          <div class="trip-in4">
+            <p>Tổng tiền</p>
+            <span>0đ</span>
+          </div>
           </div>
         </div>
       </div>
@@ -200,6 +242,19 @@ export default {
 </script>
 
 <style>
+.trip-in4{
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+  text-align: left;
+  width: 97%;
+}
+.trip-in4 p {
+  color: gray; 
+  margin: 0; 
+  margin-bottom: 1%;
+  margin-left: 3%;
+}
 .gia h3{
   margin-top: 3.5%;
   color: red;
@@ -209,6 +264,7 @@ export default {
   border: 1px solid rgb(255, 164, 164);
   margin-top: 4%;
   border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(249, 77, 10, 0.4);
 }
 .in4-trip{
   text-align: center;
@@ -224,17 +280,25 @@ export default {
   width: 35%;
 }
 .thanhtoan{
+  width: 150px;
+  height: 30px;
   border: none;
   background-color: #f2754e;
-  margin-bottom: 2%;
-  border-radius: 15px;
-  width: 130px;
+  border-radius: 25px;
   color: white;
+  font-weight: bold;
+  align-self: center;
+  font-size: 18px;
+  display: flex; 
   justify-content: center;
-  height: 35px;
+  align-items: center; 
+  text-decoration: none;
+  margin-bottom: 8%;
 }
 .pay{
   margin-top: 3%;
+  display: flex;
+  justify-content: center;
 }
 .P{
   color: red;
@@ -248,6 +312,7 @@ input[readonly] {
   font-size: 14px;
   width: 80%;
   margin-top: 5px;
+  text-align: center;
   color: #333;
 }
 .drop{
@@ -280,6 +345,9 @@ input[readonly] {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(249, 77, 10, 0.4);
   margin-top: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .clause{
   display: flex;
@@ -431,7 +499,6 @@ input[readonly] {
   display: flex;
   gap: 25px; 
   background-color: white; 
-  
 }
 
 
