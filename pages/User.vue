@@ -1,5 +1,6 @@
 <template>
-  <div class="container-user">
+  <div class="user-container-user">
+    <Loading v-if="loading" />
     <div class="User">
       <div class="content-tab">
 
@@ -18,7 +19,7 @@
           <span>Đặt lại mật khẩu</span>
         </div>
 
-        <div class="tab-item" :class="{ active: activeTab === 'logout' }" @click="setActiveTab('logout')">
+        <div class="tab-item" @click="handleLogout()">
           <img src="/images/logout.svg" alt="">
           <span>Đăng Xuất</span>
         </div>
@@ -28,62 +29,66 @@
         <div v-if="activeTab === 'info'">
           <div class="in4-tk" style="color: red; font-size: 23px; text-align: center;">Thông tin tài khoản</div>
           <div class="edit-in4">
-            <div class="IMG">
-                 <img class="avatar" :src="avatarUrl" alt="Avatar">
+            <div class="user-container-img">
+                 <img class="user-container-avatar" :src="currentUser?.avatarUrl ? currentUser?.avatarUrl : '/images/avatar-default.jpg'" alt="Avatar">
                  <input type="file" ref="fileInput" @change="onFileSelected" style="display: none;">
                  <button class="change-avatar-btn" @click="openFileDialog">Chọn ảnh</button>
             </div>
 
-            <div class="information">
-              <div class="info-item">
+            <div class="user-container-information">
+              <div class="user-container-info-item">
                 <label for="name">Họ và tên:</label>
                   <input type="text" id="name" v-model="name" :readonly="!isEditingName">
-                  <button @click="toggleEdit('name')" :class="['edit-btn', isEditingName ? 'editing' : '']">
+                  <button @click="toggleEdit('name')" :class="['user-container-edit-btn', isEditingName ? 'user-container-editing' : '']">
                   <img src="/images/rename.svg" alt="Edit">
                   </button>
              </div>
              
-             <div class="info-item">
+             <div class="user-container-info-item">
                 <label for="phone">Số điện thoại:</label>
                <input type="phone" id="phone" v-model="phone" :readonly="!isEditingPhone">
-               <button @click="toggleEdit('phone')" :class="['edit-btn', isEditingPhone ? 'editing' : '']">
+               <button @click="toggleEdit('phone')" :class="['user-container-edit-btn', isEditingPhone ? 'user-container-editing' : '']">
                <img src="/images/rename.svg" alt="Edit">
                </button>
              </div>
 
-             <div class="info-item">
+             <div class="user-container-info-item">
                <label for="email">Email:</label>
                <input type="email" id="email" v-model="email" :readonly="!isEditingEmail">
-               <button @click="toggleEdit('email')" :class="['edit-btn', isEditingEmail ? 'editing' : '']">
+               <button @click="toggleEdit('email')" :class="['user-container-edit-btn', isEditingEmail ? 'user-container-editing' : '']">
                <img src="/images/rename.svg" alt="Edit">
                </button>
             </div>
 
-             <div class="info-item">
-                <label for="gender">Giới tính:</label>
-              <select id="gender" v-model="gender">
-                <option value="male">Nam</option>
-                <option value="female">Nữ</option>
-                <option value="other">Khác</option>
+             <div class="user-container-info-item">
+                <label for="sex">Giới tính:</label>
+              <select id="sex" v-model="sex">
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+                <option value="Khác">Khác</option>
               </select>
              </div>
 
-             <div class="info-item">
-              <label for="birthdate">Ngày sinh:</label>
-              <input type="date" id="birthdate" v-model="birthdate" :readonly="!isEditingBirthdate">
-              <button @click="toggleEdit('birthdate')" :class="['edit-btn', isEditingBirthdate ? 'editing' : '']">
+             <div class="user-container-info-item">
+              <label for="dateOfBirth">Ngày sinh:</label>
+              <input type="date" id="dateOfBirth" v-model="dateOfBirth" :readonly="!isEditingDateOfBirth">
+              <button @click="toggleEdit('dateOfBirth')" :class="['user-container-edit-btn', isEditingDateOfBirth ? 'user-container-editing' : '']">
               <img src="/images/rename.svg" alt="Edit">
               </button>
              </div>
 
-             <div class="info-item">
+             <div class="user-container-info-item">
               <label for="address">Địa chỉ:</label>
               <input type="text" id="address" v-model="address" :readonly="!isEditingAddress">
-              <button @click="toggleEdit('address')" :class="['edit-btn', isEditingAddress ? 'editing' : '']">
+              <button @click="toggleEdit('address')" :class="['user-container-edit-btn', isEditingAddress ? 'user-container-editing' : '']">
               <img src="/images/rename.svg" alt="Edit">
               </button>
              </div>
-              <button class="Update" @click="updateInfo">Cập nhật</button>
+             <div class="user-container-info-item">
+              <label for="address">Số dư:</label>
+              <span>{{currentUser?.money.toLocaleString('vi-VN') + ' VND'}}</span>
+             </div>
+              <button class="user-container-update" @click="updateInfo">Cập nhật</button>
             </div>
           </div>
         </div>
@@ -96,11 +101,6 @@
         <div v-if="activeTab === 'reset'">
           <h3>Đặt lại mật khẩu</h3>
           <p>Hãy nhập thông tin để đặt lại mật khẩu của bạn.</p>
-        </div>
-
-        <div v-if="activeTab === 'logout'">
-          <h3>Đăng Xuất</h3>
-          <p>Bạn có chắc chắn muốn đăng xuất không?</p>
         </div>
       </div>
     </div>
@@ -116,41 +116,44 @@ export default {
       name: '',
       phone: '',
       email: '',
-      gender: '',
-      birthdate: '',
+      sex: '',
+      dateOfBirth: '',
       address: '',
       isEditingPhone: false,
       isEditingName: false,
       isEditingEmail: false,
-      isEditingBirthdate: false,
+      isEditingDateOfBirth: false,
       isEditingAddress: false,
+      currentUser: null
     };
   },
-  mounted() {
-    // Kiểm tra nếu có dữ liệu trong local storage thì hiển thị
-    if (localStorage.getItem('avatarUrl')) {
-      this.avatarUrl = localStorage.getItem('avatarUrl');
-    }
-    if (localStorage.getItem('name')) {
-      this.name = localStorage.getItem('name');
-    }
-    if (localStorage.getItem('email')) {
-      this.email = localStorage.getItem('email');
-    }
-    if (localStorage.getItem('birthdate')) {
-      this.birthdate = localStorage.getItem('birthdate');
-    }
-    if (localStorage.getItem('address')) {
-      this.address = localStorage.getItem('address');
-    }
-    if (localStorage.getItem('phone')) {
-      this.phone = localStorage.getItem('phone');
-    } 
-    if (localStorage.getItem('gender')) {
-    this.gender = localStorage.getItem('gender'); 
+  created() {
+      if (process.client) {
+        try {
+          this.currentUser = JSON.parse(localStorage.getItem('user'))?.data;
+          if (!this.currentUser) {
+            this.$router.push('/');
+          } else {
+            this.name = this.currentUser?.fullName
+            this.phone = this.currentUser?.phone
+            this.email = this.currentUser?.email
+            this.sex = this.currentUser?.sex
+            this.dateOfBirth = this.currentUser?.dateOfBirth
+            this.address = this.currentUser?.address
+          }
+        } catch (error) {
+          console.error('Failed to parse user data:', error);
+        }
+      }
+  },
+  computed: {
+    user() {
+      return this.$store.getters['userStore/user'];
+    },
+    loading() {
+      return this.$store.getters['userStore/loading'];
     }
   },
-
   methods: {
     setActiveTab(tab) {
       this.activeTab = tab; // Cập nhật tab hiện tại
@@ -164,7 +167,6 @@ export default {
       if (file) {
         // Tạo URL cho hình ảnh vừa chọn và hiển thị lên
         this.avatarUrl = URL.createObjectURL(file);
-        localStorage.setItem('avatarUrl', this.avatarUrl);
       }
     },
     toggleEdit(field) {
@@ -172,8 +174,8 @@ export default {
         this.isEditingName = !this.isEditingName;
       } else if (field === 'email') {
         this.isEditingEmail = !this.isEditingEmail;
-      } else if (field === 'birthdate') {
-        this.isEditingBirthdate = !this.isEditingBirthdate;
+      } else if (field === 'dateOfBirth') {
+        this.isEditingDateOfBirth = !this.isEditingDateOfBirth;
       } else if (field === 'address') {
         this.isEditingAddress = !this.isEditingAddress;
       } else if (field === 'phone') {
@@ -181,14 +183,11 @@ export default {
       }
     },
     updateInfo() {
-      // Lưu thông tin vào local storage khi nhấn nút cập nhật
-      localStorage.setItem('name', this.name);
-      localStorage.setItem('email', this.email);
-      localStorage.setItem('birthdate', this.birthdate);
-      localStorage.setItem('address', this.address);
-      localStorage.setItem('phone', this.phone);
-      localStorage.setItem('gender', this.gender);
+      //update thông tin
       alert('Cập nhật thành công');
+    },
+    async handleLogout() {      
+      await this.$store.dispatch("userStore/logout"); 
     }
   }
 }
@@ -197,7 +196,7 @@ export default {
 
 
 <style>
-.Update{
+.user-container-update{
   border: none;
   color: white;
   background-color: #f2754e;
@@ -207,24 +206,24 @@ export default {
   margin-bottom: 2%;
   margin-left: 40%;
 }
-.info-item {
+.user-container-info-item {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
   gap: 10px; 
 }
-.info-item label {
+.user-container-info-item label {
   color: #008e15;
   text-align: right;
 }
-.info-item input, .info-item select {
+.user-container-info-item input, .user-container-info-item select {
   flex: 1;
   padding: 8px;
   border: none;
   border-radius: 5px;
   margin-right: 10px;
 }
-.edit-btn {
+.user-container-edit-btn {
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -234,20 +233,20 @@ export default {
   justify-content: center; 
   margin-right: 2%;
 }
-.edit-btn.editing {
+.user-container-edit-btn.user-container-editing {
   background-color: #f86666; 
   color: #fff;
   border-radius: 5px;
 }
-.edit-btn img {
+.user-container-edit-btn img {
   width: 20px;
   height: 20px;
 }
-.information{
+.user-container-information{
   width: 65%;
   margin-top: 2%;
 }
-.IMG {
+.user-container-img {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -255,7 +254,7 @@ export default {
   width: 35%;
   margin-top: 2%;
 }
-.avatar {
+.user-container-avatar {
   width: 150px;
   height: 150px;
   border-radius: 50%;

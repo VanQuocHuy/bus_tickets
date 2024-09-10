@@ -304,7 +304,7 @@ export default {
   color: red;
   font-weight: bold;
 }
-input[readonly] {
+.container-confirm input[readonly] {
   background-color: #f9f9f9;
   border: 1px solid #ccc;
   padding: 10px;
