@@ -364,9 +364,11 @@
   width: 30%;
   box-shadow: 0 4px 8px rgba(249, 77, 10, 0.4);
 }
+
+
 .search {
-   width: 250px;
-   height: 45px;
+     width: 250px;
+     height: 45px;
      border: none;
      background-color: rgb(255, 80, 17);
      border-radius: 25px;
@@ -380,7 +382,7 @@
      text-decoration: none;
    }
    
-.switch-button {
+   .switch-button {
      background-color: transparent;
      border: none;
      cursor: pointer;
@@ -388,20 +390,23 @@
      display: flex;
      align-items: center;
      justify-content: center;
-     margin-top: auto;
      transition: transform 0.3s ease;
+     flex-shrink: 0; 
+     margin-top: 1%;
    }
-.switch-button:hover {
-     transform: rotate(360deg); 
+   .switch-button:hover {
+     transform: rotate(360deg); /* Xoay 360 độ khi hover */
    }
    .switch-button img {
      width: 40px;
      height: 40px;
    }
    .field-group {
+     margin-bottom: 20px;
      display: flex;
-     flex-direction: column; 
-     flex: 1;
+  flex-direction: column;
+  position: relative;
+  flex: 1;
    }
    .form-fields {
        display: flex;
@@ -436,7 +441,7 @@
        margin-left: auto;
        font-weight: bold;
    }
-   .options-box{
+   .options-box {
        border: 1px solid red; 
        padding: 10px;
        margin: 10px auto;
@@ -467,13 +472,13 @@
        transform: translateX(-50%);
        width: 100%;
        z-index: 1; 
-}
-.banner-img {
-       width: 100%; 
-       height: auto; 
-       max-height: 400px; 
-       object-fit: cover; 
+   }
+   .banner-img {
+       width: 100%; /* Tùy chỉnh chiều rộng banner */
+       height: auto; /* Để tự động điều chỉnh chiều cao */
+       max-height: 400px; /* Giới hạn chiều cao tối đa nếu cần */
+       object-fit: cover; /* Đảm bảo ảnh không bị biến dạng */
        border-radius: 5px;
-}
+   }
      </style>
    

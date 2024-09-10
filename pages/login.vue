@@ -114,7 +114,7 @@
 export default {
   data() {
     return {
-      activeTab: 'register', // Tab mặc định
+      activeTab: 'login', // Tab mặc định
       showPassword: false
     };
   },

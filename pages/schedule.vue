@@ -17,28 +17,39 @@
            <div class="field-group">
              <label for="departure">Điểm đi</label>
              <input type="text" id="departure" placeholder="Chọn điểm đi" class="field" v-model="departure">
+             <p v-if="errors.departure" class="error-message">{{ errors.departure }}</p>
            </div>
+
            <button class="switch-button" @click="switchFields">
              <img src="/images/switch.svg" alt="Switch">
            </button>
+
            <div class="field-group">
              <label for="destination">Điểm đến</label>
              <input type="text" id="destination" placeholder="Chọn điểm đến" class="field" v-model="destination">
+             <p v-if="errors.destination" class="error-message">{{ errors.destination }}</p>
            </div>
+
            <div class="field-group">
              <label for="departure-date">Ngày đi</label>
              <input type="date" id="departure-date" class="field" v-model="departureDate">
+             <p v-if="errors.departureDate" class="error-message">{{ errors.departureDate }}</p>
            </div>
+
            <div class="field-group" v-if="isRoundTrip === 'round-trip'">
              <label for="return-date">Ngày về</label>
              <input type="date" id="return-date" placeholder="Thêm ngày về" class="field" v-model="returnDate">
+             <p v-if="errors.returnDate" class="error-message">{{ errors.returnDate }}</p>
            </div>
+
            <div class="field-group">
              <label for="ticket-number">Số vé</label>
-             <input type="number" id="ticket-number" placeholder="Nhập số vé" class="field" v-model="ticketNumber">
+             <input type="number" id="ticket-number" placeholder="Nhập số vé" class="field" v-model="ticketNumber" min="1" step="1">
+             <p v-if="errors.ticketNumber" class="error-message">{{ errors.ticketNumber }}</p>
            </div>
+
          </div>
-         <NuxtLink to="/book_tickets" class="search"> Tìm chuyến xe </NuxtLink>
+         <button class="search" @click="search">Tìm chuyến xe</button>
       </div>
          <div class="Sales">
            <h1>KHUYẾN MÃI NỔI BẬT</h1>
@@ -73,7 +84,7 @@
               </div>
             </div>
             <div class="number-visitors">
-              <img src="/images/slogan3.svg" alt="" class="slogan1">
+              <img src="/image  s/slogan3.svg" alt="" class="slogan1">
               <div class="text1">
                  <h4 class="H4">Hơn 1,000 Chuyến xe</h4>
                  <p class="P2">C-MART phục vụ hơn 1,000 chuyến xe đường dài và liên tỉnh mỗi ngày</p>
@@ -96,38 +107,85 @@
    
    <script>
    export default {
-     data() {
-       return {
-         departure: '',
-         destination: '',
-         departureDate: '',
-         returnDate: '',
-         ticketNumber: '',
-         isRoundTrip: 'one-way' // Mặc định là một chiều
-       };
-     },
-     methods: {
-       toggleRoundTrip() {
-         // Xử lý logic nếu cần thiết khi chuyển giữa các chế độ "Một chiều" và "Khứ hồi"
-         if (this.isRoundTrip === 'one-way') {
-           this.returnDate = ''; // Reset ngày về nếu chuyển sang "Một chiều"
-         }
-       },
-       switchFields() {
-         const temp = this.departure;
-         this.departure = this.destination;
-         this.destination = temp;
-       },
-       switchFields() {
-         const temp = this.departure;
-         this.departure = this.destination;
-         this.destination = temp;
-       }
-     }
-   }
+  data() {
+    return {
+      departure: '',
+      destination: '',
+      departureDate: '',
+      returnDate: '',
+      ticketNumber: '1',
+      isRoundTrip: 'one-way',
+      errors: {
+        departure: '',
+        destination: '',
+        departureDate: '',
+        returnDate: '',
+        ticketNumber: ''
+      }
+    };
+  },
+  methods: {
+    validateForm() {
+      let isValid = true;
+      this.errors = {
+        departure: '',
+        destination: '',
+        departureDate: '',
+        returnDate: '',
+        ticketNumber: ''
+      };
+      if (!this.departure) {
+        this.errors.departure = 'Không được để trống';
+        isValid = false;
+      }
+      if (!this.destination) {
+        this.errors.destination = 'Không được để trống';
+        isValid = false;
+      }
+      if (!this.departureDate) {
+        this.errors.departureDate = 'Không được để trống';
+        isValid = false;
+      }
+      if (this.isRoundTrip === 'round-trip' && !this.returnDate) {
+        this.errors.returnDate = 'Không được để trống';
+        isValid = false;
+      }
+      if (!this.ticketNumber || this.ticketNumber <= 0 ) {
+        this.errors.ticketNumber = 'Số vé phải phải lớn hơn 0';
+        isValid = false;
+      }
+      return isValid;
+    },
+    search() {
+      if (this.validateForm()) {
+        this.$router.push('/book_tickets');
+      }
+    },
+    toggleRoundTrip() {
+      if (this.isRoundTrip === 'one-way') {
+        this.returnDate = '';
+      }
+    },
+    switchFields() {
+      const temp = this.departure;
+      this.departure = this.destination;
+      this.destination = temp;
+    }
+  }
+};
+
    </script>
    
    <style>
+   .error-message {
+    color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  white-space: nowrap;
+}
    .futa-group{
      margin-top: 20px;
      color:rgb(8, 83, 8) ;
@@ -238,8 +296,9 @@
      display: flex;
      align-items: center;
      justify-content: center;
-     margin-top: auto;
      transition: transform 0.3s ease;
+     flex-shrink: 0; 
+     margin-top: 1%;
    }
    .switch-button:hover {
      transform: rotate(360deg); /* Xoay 360 độ khi hover */
@@ -249,9 +308,11 @@
      height: 40px;
    }
    .field-group {
+     margin-bottom: 20px;
      display: flex;
-     flex-direction: column; 
-     flex: 1;
+  flex-direction: column;
+  position: relative;
+  flex: 1;
    }
    .form-fields {
        display: flex;
