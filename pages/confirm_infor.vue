@@ -242,10 +242,10 @@ export default {
 .momo-image {
   width: 30px;
   height: 30px;
-  margin-left: 15px; /* Khoảng cách giữa radio và hình ảnh */
+  margin-left: 15px; 
 }
 .momo-text {
-  margin-left: 10px; /* Khoảng cách giữa hình ảnh và văn bản Momo */
+  margin-left: 10px; 
 }
 label {
   display: flex;
