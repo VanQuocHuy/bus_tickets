@@ -51,8 +51,8 @@
                 :src="
                   newAvatarUrl
                     ? newAvatarUrl
-                    : this.currenUser?.avatarUrl
-                    ? this.currenUser?.avatarUrl
+                    : user?.data?.avatarUrl
+                    ? user?.data?.avatarUrl
                     : '/images/avatar-default.jpg'
                 "
                 alt="Avatar"
@@ -182,7 +182,7 @@
               <div class="user-container-info-item">
                 <label for="address">Số dư:</label>
                 <span>{{
-                  this.currenUser?.money.toLocaleString("vi-VN") + " VND"
+                  user?.data?.money.toLocaleString("vi-VN") + " VND"
                 }}</span>
               </div>
               <button class="user-container-update" @click="updateInfo">
@@ -415,26 +415,25 @@ export default {
       showOldPassword: false,
       showNewPassword: false,
       showConfirmPassword: false,
-
-      currenUser: null,
     };
   },
   created() {
     if (process.client) {
       try {
-        const user = JSON.parse(localStorage.getItem("user"));
+        let user = JSON.parse(localStorage.getItem("user"));
         this.userId = JSON.parse(localStorage.getItem("user"))?.data._id;
-        this.currenUser = JSON.parse(localStorage.getItem("user"))?.data;
         if (!user) {
           this.$router.push("/");
         } else {
+          console.log(user);
+
           this.$store.commit("userStore/SET_USER", user);
-          this.name = this.currenUser.fullName;
-          this.phone = this.currenUser.phone;
-          this.email = this.currenUser.email;
-          this.sex = this.currenUser.sex;
-          this.dateOfBirth = this.currenUser.dateOfBirth;
-          this.address = this.currenUser.address;
+          this.name = user?.data?.fullName;
+          this.phone = user?.data?.phone;
+          this.email = user?.data?.email;
+          this.sex = user?.data?.sex;
+          this.dateOfBirth = user?.data?.dateOfBirth;
+          this.address = user?.data?.address;
         }
       } catch (error) {
         console.error("Failed to parse user data:", error);
