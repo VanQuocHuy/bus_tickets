@@ -418,12 +418,9 @@ export default {
     };
   },
   created() {
-    console.log("hàm create run");
-
     if (process.client) {
       try {
-        let user = JSON.parse(localStorage.getItem("user"));
-        console.log("client side nès: ", user);
+        const user = JSON.parse(localStorage.getItem("user"));
         this.userId = JSON.parse(localStorage.getItem("user"))?.data._id;
         if (!user) {
           this.$router.push("/");
