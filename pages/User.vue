@@ -421,13 +421,11 @@ export default {
     if (process.client) {
       try {
         let user = JSON.parse(localStorage.getItem("user"));
+        console.log("client side nè: ", user);
         this.userId = JSON.parse(localStorage.getItem("user"))?.data._id;
         if (!user) {
-          console.log("khong người dùng: ", user);
           this.$router.push("/");
         } else {
-          console.log("Có người dùng: ", user);
-
           this.$store.commit("userStore/SET_USER", user);
           this.name = user?.data?.fullName;
           this.phone = user?.data?.phone;
@@ -439,6 +437,8 @@ export default {
       } catch (error) {
         console.error("Failed to parse user data:", error);
       }
+    } else {
+      console.log("serve side nè");
     }
   },
   computed: {
