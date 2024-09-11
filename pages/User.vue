@@ -423,7 +423,7 @@ export default {
     if (process.client) {
       try {
         let user = JSON.parse(localStorage.getItem("user"));
-        console.log("client side nè: ", user);
+        console.log("client side nès: ", user);
         this.userId = JSON.parse(localStorage.getItem("user"))?.data._id;
         if (!user) {
           this.$router.push("/");
