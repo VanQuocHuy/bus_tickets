@@ -335,7 +335,7 @@ export default {
           password: this.password,
           otp: this.otp
         }
-        const res = await axios.post("http://localhost:8000/v1/bustickets/user/register-user", newUser)
+        const res = await axios.post("https://babefood.io.vn/v1/bustickets/user/register-user", newUser)
         
         alert(res.data.message)
         if(res.data.code === 200) {

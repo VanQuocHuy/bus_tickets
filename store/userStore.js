@@ -35,7 +35,7 @@ export const actions = {
 
     try {
       const res = await axios.post(
-        "http://localhost:8000/v1/bustickets/user/login-user",
+        "https://babefood.io.vn/v1/bustickets/user/login-user",
         newUser
       );
       commit("SET_USER", res.data);
@@ -51,10 +51,47 @@ export const actions = {
 
     try {
       const res = await axios.post(
-        "http://localhost:8000/v1/bustickets/otp/send-otp",
+        "https://babefood.io.vn/v1/bustickets/otp/send-otp",
         { email: email }
       );
       commit("SET_OTP", res.data);
+    } catch (error) {
+      commit("SET_ERROR", error.message);
+    } finally {
+      commit("SET_LOADING", false);
+    }
+  },
+  async updateAvatar({ commit, state }, formData) {
+    commit("SET_LOADING", true);
+    commit("SET_ERROR", null);
+
+    try {
+      const axiosJWT = createAxios(state.user.data);
+
+      const res = await axiosJWT.post(
+        `https://babefood.io.vn/v1/bustickets/user/upload-image/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (res.data.status) {
+        const data = res.data.data;
+
+        const newData = {
+          status: true,
+          code: 200,
+          message: "Cập nhật ảnh thành công",
+          data: { ...data, accessToken: state.user.data.accessToken },
+        };
+
+        commit("SET_USER", newData);
+      } else {
+        alert(res.data.message);
+      }
     } catch (error) {
       commit("SET_ERROR", error.message);
     } finally {
@@ -69,7 +106,7 @@ export const actions = {
       const axiosJWT = createAxios(state.user.data);
 
       const res = await axiosJWT.post(
-        "http://localhost:8000/v1/bustickets/user/logout",
+        "https://babefood.io.vn/v1/bustickets/user/logout",
         { userId: state.user.data._id },
         {
           headers: {
