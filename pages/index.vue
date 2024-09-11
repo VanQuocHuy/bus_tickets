@@ -147,21 +147,21 @@ export default {
       listDeparture: [], // Các gợi ý điểm đi
       listDestination: [], // Các gợi ý điểm đến
       previousDestination: "",
-      currentUser: null
+      currentUser: null,
     };
   },
   created() {
-   // Chỉ chạy trên client-side, không chạy ở cmd của visual
+    // Chỉ chạy trên client-side, không chạy ở cmd của visual
     if (process.client) {
       try {
-        this.currentUser = JSON.parse(localStorage.getItem('user'))?.data;
+        this.currentUser = JSON.parse(localStorage.getItem("user"))?.data;
         if (this.currentUser?.role === "shipper") {
-          alert("Chuyển đến trang shipper")
-        } else if(this.currentUser?.role === "admin") {
-          alert("chuyển đến trang admin")
-        }        
+          alert("Chuyển đến trang shipper");
+        } else if (this.currentUser?.role === "admin") {
+          alert("chuyển đến trang admin");
+        }
       } catch (error) {
-        console.error('Failed to parse user data:', error);
+        console.error("Failed to parse user data:", error);
       }
     }
   },
@@ -228,8 +228,8 @@ export default {
     },
     //Tìm dường
     async handleSubmit() {
-      const bannerEl = document.querySelector(".banner-img")
-      bannerEl.style.display = "none"
+      const bannerEl = document.querySelector(".banner-img");
+      bannerEl.style.display = "none";
       //Xoá danh sách các địa chỉ đã đề xuất trong ô điểm đi và điểm đến
       this.listDeparture = [];
       this.listDestination = [];

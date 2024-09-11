@@ -3,382 +3,487 @@
     <Loading v-if="loading" />
     <div class="login">
       <div class="img">
-        <img src="/images/dn_dk.svg" alt="" class="img_dn">
+        <img src="/images/dn_dk.svg" alt="" class="img_dn" />
       </div>
       <div class="dndk">
         <h4>Đăng nhập/Đăng ký tài khoản</h4>
         <div class="tabs">
-          <button 
-            :class="{ active: activeTab === 'login' }" 
+          <button
+            :class="{ active: activeTab === 'login' }"
             @click="activeTab = 'login'"
           >
             ĐĂNG NHẬP
           </button>
 
-          <button 
-            :class="{ active: activeTab === 'register' }" 
+          <button
+            :class="{ active: activeTab === 'register' }"
             @click="activeTab = 'register'"
           >
             ĐĂNG KÝ
           </button>
-          <hr class="lane">
+          <hr class="lane" />
         </div>
-                      <!-- Nội dung Đăng nhập -->
+        <!-- Nội dung Đăng nhập -->
         <div v-if="activeTab === 'login'" class="tab-content">
           <div class="input-group">
             <span class="input-icon">
-              <img src="/images/mail_send.svg" alt="Email Icon" class="icon">
+              <img src="/images/mail_send.svg" alt="Email Icon" class="icon" />
             </span>
-            <input type="email" placeholder="Nhập địa chỉ email" class="input login-form" v-model="userName" @blur="validateLoginEmail" ref="loginEmailInput" @keypress.enter="handleKeyPress">
+            <input
+              type="email"
+              placeholder="Nhập địa chỉ email"
+              class="input login-form"
+              v-model="userName"
+              @blur="validateLoginEmail"
+              ref="loginEmailInput"
+              @keypress.enter="handleKeyPress"
+            />
           </div>
-          <p class="tab-content-msg">{{currentInput === "login-email-input" ? error : ""}}</p>
+          <p class="tab-content-msg">
+            {{ currentInput === "login-email-input" ? error : "" }}
+          </p>
           <div class="input-group">
             <span class="input-icon">
-              <img src="/images/password.svg" alt="Password Icon" class="icon">
+              <img
+                src="/images/password.svg"
+                alt="Password Icon"
+                class="icon"
+              />
             </span>
-            <input :type="showPassword ? 'text' : 'password'" placeholder="Nhập mật khẩu" class="input login-form" v-model="pass" @blur="validateLoginPassword" ref="loginPasswordInput" @keypress.enter="handleKeyPress">
-            <span class="toggle-password" 
-              @click="() => togglePasswordVisibility('showPassword')"><img 
-              :src="showPassword ? '/images/eye.svg' : '/images/eye-slash.svg'" 
-              alt="Toggle Password Visibility" 
-              class="icon">
-           </span>
+            <input
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="Nhập mật khẩu"
+              class="input login-form"
+              v-model="pass"
+              @blur="validateLoginPassword"
+              ref="loginPasswordInput"
+              @keypress.enter="handleKeyPress"
+            />
+            <span
+              class="toggle-password"
+              @click="() => togglePasswordVisibility('showPassword')"
+              ><img
+                :src="
+                  showPassword ? '/images/eye.svg' : '/images/eye-slash.svg'
+                "
+                alt="Toggle Password Visibility"
+                class="icon"
+              />
+            </span>
           </div>
-          <p class="tab-content-msg">{{currentInput === "login-password-input" ? error : ""}}</p>
+          <p class="tab-content-msg">
+            {{ currentInput === "login-password-input" ? error : "" }}
+          </p>
           <div class="google-login">
-               <button class="google-button">
-                Sign in with Google Account
-                <img src="/images/iconGG.png" alt="Google Icon" class="google-icon">
-               </button>
+            <button class="google-button">
+              Sign in with Google Account
+              <img
+                src="/images/iconGG.png"
+                alt="Google Icon"
+                class="google-icon"
+              />
+            </button>
           </div>
           <div>
-             <button class="login-1" @click="handleLogin()"> Đăng Nhập</button>
-           </div>
-             <button class="forgotPass"> Quên mật khẩu</button>
-        </div>  
-                      <!-- Nội dung Đăng ký -->
+            <button class="login-1" @click="handleLogin()">Đăng Nhập</button>
+          </div>
+          <button class="forgotPass">Quên mật khẩu</button>
+        </div>
+        <!-- Nội dung Đăng ký -->
         <div v-if="activeTab === 'register'" class="tab-content">
           <div class="input-group">
             <span class="input-icon">
-              <img src="/images/mail_send.svg" alt="Email Icon" class="icon">
+              <img src="/images/mail_send.svg" alt="Email Icon" class="icon" />
             </span>
-            <input type="email" placeholder="Nhập địa chỉ email" class="input register-form" v-model="email" @blur="validateEmail" ref="emailInput" @keypress.enter="handleKeyPress">
+            <input
+              type="email"
+              placeholder="Nhập địa chỉ email"
+              class="input register-form"
+              v-model="email"
+              @blur="validateEmail"
+              ref="emailInput"
+              @keypress.enter="handleKeyPress"
+            />
           </div>
-          <p class="tab-content-msg">{{currentInput === "resgister-mail-input" ? error : ""}}</p>
+          <p class="tab-content-msg">
+            {{ currentInput === "resgister-mail-input" ? error : "" }}
+          </p>
 
           <div class="input-group">
             <span class="input-icon">
-              <img src="/images/code-solid.svg" alt="Code Icon" class="icon">
+              <img src="/images/code-solid.svg" alt="Code Icon" class="icon" />
             </span>
-            <input type="text" placeholder="Mã xác nhận" class="input register-form" v-model="otp" @input="onlyNumberInput($event)" @blur="validateOtp" ref="otpInput" maxlength="6" @keypress.enter="handleKeyPress">
+            <input
+              type="text"
+              placeholder="Mã xác nhận"
+              class="input register-form"
+              v-model="otp"
+              @input="onlyNumberInput($event)"
+              @blur="validateOtp"
+              ref="otpInput"
+              maxlength="6"
+              @keypress.enter="handleKeyPress"
+            />
             <div class="code-btn">
-              <button class="get-code-btn" @click="getOtpMail()">{{countDown > 0 ? `(${countDown}s)` : "Lấy mã"}}</button>
+              <button class="get-code-btn" @click="getOtpMail()">
+                {{ countDown > 0 ? `(${countDown}s)` : "Lấy mã" }}
+              </button>
             </div>
           </div>
-          <p class="tab-content-msg">{{currentInput === "resgister-otp-input" ? error : ""}}</p>
+          <p class="tab-content-msg">
+            {{ currentInput === "resgister-otp-input" ? error : "" }}
+          </p>
 
           <div class="input-group">
             <span class="input-icon">
-              <img src="/images/user-regular.svg" alt="Name Icon" class="icon">
+              <img
+                src="/images/user-regular.svg"
+                alt="Name Icon"
+                class="icon"
+              />
             </span>
-            <input type="text" placeholder="Nhập họ tên" class="input register-form" v-model="fullName" @blur="validateFullName" ref="fullNameInput" @keypress.enter="handleKeyPress">
+            <input
+              type="text"
+              placeholder="Nhập họ tên"
+              class="input register-form"
+              v-model="fullName"
+              @blur="validateFullName"
+              ref="fullNameInput"
+              @keypress.enter="handleKeyPress"
+            />
           </div>
-          <p class="tab-content-msg">{{currentInput === "resgister-fullName-input" ? error : ""}}</p>
+          <p class="tab-content-msg">
+            {{ currentInput === "resgister-fullName-input" ? error : "" }}
+          </p>
 
           <div class="input-group">
             <span class="input-icon">
-              <img src="/images/password.svg" alt="Pass Icon" class="icon">
+              <img src="/images/password.svg" alt="Pass Icon" class="icon" />
             </span>
-            <input :type="showPassword ? 'text' : 'password'" placeholder="Mật khẩu" class="input register-form" v-model="password" @blur="validatePassword" ref="passwordInput" @keypress.enter="handleKeyPress">
-            <span class="toggle-password" 
-              @click="() => togglePasswordVisibility('showPassword')"><img 
-              :src="showPassword ? '/images/eye.svg' : '/images/eye-slash.svg'" 
-              alt="Toggle Password Visibility" 
-              class="icon">
-           </span>
+            <input
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="Mật khẩu"
+              class="input register-form"
+              v-model="password"
+              @blur="validatePassword"
+              ref="passwordInput"
+              @keypress.enter="handleKeyPress"
+            />
+            <span
+              class="toggle-password"
+              @click="() => togglePasswordVisibility('showPassword')"
+              ><img
+                :src="
+                  showPassword ? '/images/eye.svg' : '/images/eye-slash.svg'
+                "
+                alt="Toggle Password Visibility"
+                class="icon"
+              />
+            </span>
           </div>
-          <p class="tab-content-msg">{{currentInput === "resgister-password-input" ? error : ""}}</p>
+          <p class="tab-content-msg">
+            {{ currentInput === "resgister-password-input" ? error : "" }}
+          </p>
 
           <div class="input-group">
             <span class="input-icon">
-              <img src="/images/password.svg" alt="Password Icon" class="icon">
+              <img
+                src="/images/password.svg"
+                alt="Password Icon"
+                class="icon"
+              />
             </span>
-            <input :type="showRePassword ? 'text' : 'password'" placeholder="Xác nhận mật khẩu" class="input register-form" v-model="rePassword" @blur="validateRePassword" @keypress.enter="handleKeyPress">
-            <span class="toggle-password" 
-              @click="() => togglePasswordVisibility('showRePassword')"><img 
-              :src="showRePassword ? '/images/eye.svg' : '/images/eye-slash.svg'" 
-              alt="Toggle RePassword Visibility" 
-              class="icon">
-           </span>
+            <input
+              :type="showRePassword ? 'text' : 'password'"
+              placeholder="Xác nhận mật khẩu"
+              class="input register-form"
+              v-model="rePassword"
+              @blur="validateRePassword"
+              @keypress.enter="handleKeyPress"
+            />
+            <span
+              class="toggle-password"
+              @click="() => togglePasswordVisibility('showRePassword')"
+              ><img
+                :src="
+                  showRePassword ? '/images/eye.svg' : '/images/eye-slash.svg'
+                "
+                alt="Toggle RePassword Visibility"
+                class="icon"
+              />
+            </span>
           </div>
-          <p class="tab-content-msg">{{currentInput === "resgister-rePassword-input" ? error : ""}}</p>
+          <p class="tab-content-msg">
+            {{ currentInput === "resgister-rePassword-input" ? error : "" }}
+          </p>
 
           <div>
-             <button class="login-1" @click="handleRegister()">Đăng ký</button>
-           </div>
+            <button class="login-1" @click="handleRegister()">Đăng ký</button>
+          </div>
         </div>
       </div>
     </div>
     <div class="futa-group">
-        <h1>KẾT NỐI C-MART GROUP</h1>
-        <p>Kết nối đa dạng hệ sinh thái C-MART qua App C-MART: 
-          mua vé Xe C-MART, Xe Buýt, Xe Hợp Đồng, Giao Hàng,...</p>
-        <img src="/images/futagroup.svg" alt="">
-      </div>   
-
-  </div>  
+      <h1>KẾT NỐI C-MART GROUP</h1>
+      <p>
+        Kết nối đa dạng hệ sinh thái C-MART qua App C-MART: mua vé Xe C-MART, Xe
+        Buýt, Xe Hợp Đồng, Giao Hàng,...
+      </p>
+      <img src="/images/futagroup.svg" alt="" />
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   data() {
     return {
-      activeTab: 'login', // Tab mặc định
+      activeTab: "login", // Tab mặc định
       showPassword: false,
       showRePassword: false,
-      currentInput: '',
-      error: '',
-      email: '',
-      otp: '',
-      fullName: '',
-      password: '',
-      rePassword: '',
+      currentInput: "",
+      error: "",
+      email: "",
+      otp: "",
+      fullName: "",
+      password: "",
+      rePassword: "",
       countDown: 0,
       intervalId: null,
-      userName: '',
-      pass: '',
-      currentUser: null
+      userName: "",
+      pass: "",
+      currentUser: null,
     };
   },
   computed: {
     user() {
-      return this.$store.getters['userStore/user'];
+      return this.$store.getters["userStore/user"];
     },
     otpCode() {
-      return this.$store.getters['userStore/otpCode'];
+      return this.$store.getters["userStore/otpCode"];
     },
     loading() {
-      return this.$store.getters['userStore/loading'];
-    }
+      return this.$store.getters["userStore/loading"];
+    },
   },
   created() {
-   // Chỉ chạy trên client-side, không chạy ở cmd của visual
+    // Chỉ chạy trên client-side, không chạy ở cmd của visual
     if (process.client) {
       try {
-        this.currentUser = JSON.parse(localStorage.getItem('user'))?.data;
+        this.currentUser = JSON.parse(localStorage.getItem("user"))?.data;
         if (this.currentUser) {
-          this.$router.push('/');
+          this.$router.push("/");
         }
       } catch (error) {
-        console.error('Failed to parse user data:', error);
+        console.error("Failed to parse user data:", error);
       }
     }
   },
   methods: {
     handleKeyPress(event) {
-      if (event.key === 'Enter') {
-        const currentForm = event.target.className.split(' ')[1]
-        
-        if(currentForm === "login-form") {
+      if (event.key === "Enter") {
+        const currentForm = event.target.className.split(" ")[1];
+
+        if (currentForm === "login-form") {
           this.handleLogin();
-        } else if(currentForm === "register-form"){
-          this.handleRegister()
-        }        
+        } else if (currentForm === "register-form") {
+          this.handleRegister();
+        }
       }
     },
     togglePasswordVisibility(cuerrentEye) {
-      if(cuerrentEye === "showPassword") {
+      if (cuerrentEye === "showPassword") {
         this.showPassword = !this.showPassword;
       }
       if (cuerrentEye === "showRePassword") {
-        this.showRePassword = !this.showRePassword
+        this.showRePassword = !this.showRePassword;
       }
-      
     },
     validateEmail() {
       const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      this.currentInput = "resgister-mail-input"
-      if(!regex.test(this.email)) {
-        this.error = "*Email không đúng định dạng, vd: example@gmail.com"
+      this.currentInput = "resgister-mail-input";
+      if (!regex.test(this.email)) {
+        this.error = "*Email không đúng định dạng, vd: example@gmail.com";
         this.$refs.emailInput.focus();
       } else {
-        this.error = ""
+        this.error = "";
       }
     },
     onlyNumberInput(event) {
       const inputValue = event.target.value;
-      const cleanedValue = inputValue.replace(/\D/g, '');
-      
+      const cleanedValue = inputValue.replace(/\D/g, "");
+
       if (cleanedValue.length <= 6) {
         this.otp = cleanedValue;
-      }     
+      }
     },
     validateOtp() {
       const regex = /^\d{6}$/;
-      this.currentInput = "resgister-otp-input"
-      if(!regex.test(this.otp)) {
-        this.error = "*OTP không đúng định dạng, vd: 021564"
+      this.currentInput = "resgister-otp-input";
+      if (!regex.test(this.otp)) {
+        this.error = "*OTP không đúng định dạng, vd: 021564";
         this.$refs.otpInput.focus();
       } else {
-        this.error = ""
+        this.error = "";
       }
     },
-    validateFullName () {
-      this.fullName = this.fullName.trim().replaceAll(/\s+/g, ' ')
-      this.currentInput = "resgister-fullName-input"
-      if(this.fullName.length < 5) {
-        this.error = "*Độ dài họ và tên tối thiểu là 5 ký tự"
+    validateFullName() {
+      this.fullName = this.fullName.trim().replaceAll(/\s+/g, " ");
+      this.currentInput = "resgister-fullName-input";
+      if (this.fullName.length < 5) {
+        this.error = "*Độ dài họ và tên tối thiểu là 5 ký tự";
         this.$refs.fullNameInput.focus();
       } else {
-        this.error = ""
+        this.error = "";
       }
     },
-    validatePassword () {
-      this.currentInput = "resgister-password-input"
-      if(this.password.length < 8) {
-        this.error = "*Mật khẩu phải có ít nhất 8 ký tự"
+    validatePassword() {
+      this.currentInput = "resgister-password-input";
+      if (this.password.length < 8) {
+        this.error = "*Mật khẩu phải có ít nhất 8 ký tự";
         this.$refs.passwordInput.focus();
-      } else if(!/[A-Z]/.test(this.password)) {
-        this.error = "*Mật khẩu phải chứa ít nhất một chữ cái hoa."
+      } else if (!/[A-Z]/.test(this.password)) {
+        this.error = "*Mật khẩu phải chứa ít nhất một chữ cái hoa.";
         this.$refs.passwordInput.focus();
-      } else if(!/[a-z]/.test(this.password)) {
-        this.error = "*Mật khẩu phải chứa ít nhất một chữ cái thường."
+      } else if (!/[a-z]/.test(this.password)) {
+        this.error = "*Mật khẩu phải chứa ít nhất một chữ cái thường.";
         this.$refs.passwordInput.focus();
-      } else if(!/[!@#$%^&*(),.?":{}|<>]/.test(this.password)) {
-        this.error = "*Mật khẩu phải chứa ít nhất một ký tự đặc biệt."
+      } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(this.password)) {
+        this.error = "*Mật khẩu phải chứa ít nhất một ký tự đặc biệt.";
         this.$refs.passwordInput.focus();
       } else {
-        this.error = ""
+        this.error = "";
       }
     },
-    validateRePassword () {
-      this.currentInput = "resgister-rePassword-input"
-      if(this.password !== this.rePassword) {
-        this.error = "*Mật khẩu không trùng khớp"
+    validateRePassword() {
+      this.currentInput = "resgister-rePassword-input";
+      if (this.password !== this.rePassword) {
+        this.error = "*Mật khẩu không trùng khớp";
       } else {
-        this.error = ""
+        this.error = "";
       }
     },
     validateLoginEmail() {
       const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      this.currentInput = "login-email-input"
-      if(!regex.test(this.userName)) {
-        this.error = "*Email không đúng định dạng, vd: example@gmail.com"
+      this.currentInput = "login-email-input";
+      if (!regex.test(this.userName)) {
+        this.error = "*Email không đúng định dạng, vd: example@gmail.com";
         this.$refs.loginEmailInput.focus();
       } else {
-        this.error = ""
+        this.error = "";
       }
     },
-    validateLoginPassword () {
-      this.currentInput = "login-password-input"
-      if(this.pass.length < 8) {
-        this.error = "*Mật khẩu phải có ít nhất 8 ký tự"
+    validateLoginPassword() {
+      this.currentInput = "login-password-input";
+      if (this.pass.length < 8) {
+        this.error = "*Mật khẩu phải có ít nhất 8 ký tự";
         this.$refs.loginPasswordInput.focus();
       } else {
-        this.error = ""
+        this.error = "";
       }
     },
     async getOtpMail() {
-      if(this.email === "") {
-        this.currentInput = "resgister-mail-input"
-        this.error= "*Không được để trống email"
+      if (this.email === "") {
+        this.currentInput = "resgister-mail-input";
+        this.error = "*Không được để trống email";
         this.$refs.emailInput.focus();
-      } else if(this.countDown > 0) {
-        this.currentInput = "resgister-otp-input"
-        this.error= "*Mỗi phút bạn chỉ có thể lấy 1 mã OTP"
+      } else if (this.countDown > 0) {
+        this.currentInput = "resgister-otp-input";
+        this.error = "*Mỗi phút bạn chỉ có thể lấy 1 mã OTP";
       } else {
-        await this.$store.dispatch("userStore/getOtp", this.email)        
-        if(this.otpCode.status) {       
-          alert(this.otpCode.message)
-          this.countDown = this.otpCode.data
+        await this.$store.dispatch("userStore/getOtp", this.email);
+        if (this.otpCode.status) {
+          alert(this.otpCode.message);
+          this.countDown = this.otpCode.data;
           this.intervalId = setInterval(() => {
-            if(this.countDown > 0) {
-              this.countDown--
+            if (this.countDown > 0) {
+              this.countDown--;
             } else {
-              this.error= ""
-              clearInterval(this.intervalId)
+              this.error = "";
+              clearInterval(this.intervalId);
             }
-          }, 1000)          
+          }, 1000);
         } else {
-          alert("Lấy mã otp thất bại")
+          alert("Lấy mã otp thất bại");
         }
       }
     },
     async handleRegister() {
-      if(!this.email) {
-        this.currentInput = "resgister-mail-input"
-        this.error= "*Không được để trống email"
+      if (!this.email) {
+        this.currentInput = "resgister-mail-input";
+        this.error = "*Không được để trống email";
         this.$refs.emailInput.focus();
       } else if (!this.otp) {
-        this.currentInput = "resgister-otp-input"
-        this.error= "*Không được để trống OTP"
+        this.currentInput = "resgister-otp-input";
+        this.error = "*Không được để trống OTP";
         this.$refs.otpInput.focus();
       } else if (!this.fullName) {
-        this.currentInput = "resgister-fullName-input"
-        this.error= "*Không được để trống họ tên"
+        this.currentInput = "resgister-fullName-input";
+        this.error = "*Không được để trống họ tên";
         this.$refs.fullNameInput.focus();
       } else if (!this.password) {
-        this.currentInput = "resgister-password-input"
-        this.error= "*Không được để trống mật khẩu"
+        this.currentInput = "resgister-password-input";
+        this.error = "*Không được để trống mật khẩu";
         this.$refs.passwordInput.focus();
       } else if (!this.rePassword) {
-        this.currentInput = "resgister-rePassword-input"
-        this.error= "*Không được để trống xác nhận mật khẩu"
-      } else if(this.rePassword !== this.password) {
-        this.validateRePassword()
-      } else{
+        this.currentInput = "resgister-rePassword-input";
+        this.error = "*Không được để trống xác nhận mật khẩu";
+      } else if (this.rePassword !== this.password) {
+        this.validateRePassword();
+      } else {
         const newUser = {
           email: this.email,
           fullName: this.fullName,
           password: this.password,
-          otp: this.otp
-        }
-        const res = await axios.post("https://babefood.io.vn/v1/bustickets/user/register-user", newUser)
-        
-        alert(res.data.message)
-        if(res.data.code === 200) {
-          this.email = ''
-          this.fullName = ''
-          this.password = '',
-          this.otp = ''
-          this.activeTab = "login"
+          otp: this.otp,
+        };
+        const res = await axios.post(
+          "https://babefood.io.vn/v1/bustickets/user/register-user",
+          newUser
+        );
+
+        alert(res.data.message);
+        if (res.data.code === 200) {
+          this.email = "";
+          this.fullName = "";
+          (this.password = ""), (this.otp = "");
+          this.activeTab = "login";
         }
       }
     },
     async handleLogin() {
-      if(!this.userName) {
-        this.currentInput = "login-email-input"
-        this.error= "*Không được để trống email"
+      if (!this.userName) {
+        this.currentInput = "login-email-input";
+        this.error = "*Không được để trống email";
         this.$refs.loginEmailInput.focus();
       } else if (!this.pass) {
-        this.currentInput = "login-password-input"
-        this.error= "*Không được để trống mật khẩu"
+        this.currentInput = "login-password-input";
+        this.error = "*Không được để trống mật khẩu";
         this.$refs.loginPasswordInput.focus();
       } else {
         const newUser = {
           email: this.userName,
           password: this.pass,
-        }
-        await this.$store.dispatch('userStore/getUser', newUser);
-        this.currentUser = this.user.data
-        if(this.user.status) {
-          this.$router.push('/');
+        };
+        await this.$store.dispatch("userStore/getUser", newUser);
+        this.currentUser = this.user.data;
+        if (this.user.status) {
+          this.$router.push("/");
         } else {
-          alert(this.user.message)
+          alert(this.user.message);
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
-
 .get-code-btn {
   background-color: transparent;
-  color:#f94d0a ;
+  color: #f94d0a;
   border: none;
   font-weight: bold;
   padding: 10px 15px;
@@ -387,12 +492,12 @@ export default {
   font-size: 14px;
 }
 .google-login {
-  text-align: center; 
-  margin-top: 20px; 
+  text-align: center;
+  margin-top: 20px;
 }
 .google-button {
-  background-color: #f6d4d4; 
-  color: #f94d0a; 
+  background-color: #f6d4d4;
+  color: #f94d0a;
   border: none;
   border-radius: 15px;
   padding: 10px 20px;
@@ -401,37 +506,37 @@ export default {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  width: 60%; 
+  width: 60%;
   margin-left: 18%;
 }
-  .google-icon {
-  width: 20px; 
+.google-icon {
+  width: 20px;
   height: 20px;
-  margin-left: 8px; 
+  margin-left: 8px;
 }
 .toggle-password {
   padding: 10px;
   cursor: pointer;
-  background-color: white; 
+  background-color: white;
 }
-.futa-group{
+.futa-group {
   margin-top: 20px;
-  color:rgb(8, 83, 8) ;
+  color: rgb(8, 83, 8);
   text-align: center;
   margin-bottom: 40px;
 }
-.futa-group p{
+.futa-group p {
   color: black;
   font-weight: bold;
 }
-.forgotPass{
- color: #f94d0a; 
- border: none;
- background-color:#f9f9f9 ;
- margin-top: 3%;
- margin-left: 9%;
+.forgotPass {
+  color: #f94d0a;
+  border: none;
+  background-color: #f9f9f9;
+  margin-top: 3%;
+  margin-left: 9%;
 }
-.login-1{
+.login-1 {
   margin-top: 5%;
   border: none;
   background-color: #f94d0a;
@@ -456,7 +561,7 @@ export default {
   padding: 10px;
   background-color: rgb(250, 217, 209);
 }
-.input{
+.input {
   flex: 1;
   padding: 10px;
   border: none;
@@ -491,7 +596,7 @@ export default {
   font-weight: bold;
 }
 .tabs button:hover {
-  color: #f94d0a; 
+  color: #f94d0a;
 }
 .tabs button.active {
   color: #f94d0a;
@@ -501,21 +606,20 @@ export default {
   text-align: left;
 }
 .login {
-  border: 1px solid red; 
+  border: 1px solid red;
   padding: 10px;
   margin: 10px auto;
   border-radius: 10px;
   width: 1100px;
   margin-top: 30px;
   display: flex;
-  gap: 25px; 
-  background-color: #f9f9f9; 
+  gap: 25px;
+  background-color: #f9f9f9;
   box-shadow: 0 4px 8px rgba(249, 77, 10, 0.4);
-
 }
 .img_dn {
-    max-width: 100%;
-    height: auto;
+  max-width: 100%;
+  height: auto;
 }
 .dndk {
   text-align: center;
@@ -523,6 +627,5 @@ export default {
   width: 50%;
   color: #f94d0a;
   margin-bottom: 2%;
-  
 }
 </style>

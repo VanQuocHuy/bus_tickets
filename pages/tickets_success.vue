@@ -1,106 +1,160 @@
 <template>
-    <div class="container-success">
-      <div class="success">
-        <img src="/images/checkmark.png" alt="" class="checkmark">
-        <h4 style="color: #008e15;" >Mua vé xe thành công</h4>
-        <p>Thông tin vé đã đặt được gửi về địa chỉ email <span style="font-weight: bold;">levanquochuy06022001@gmail.com</span>. Vui lòng kiểm tra lại</p>
-        <div class="in4-tickets">
-           <h5 style="color: #008e15;">THÔNG TIN MUA VÉ</h5>
-          <div class="ticket-info">
-
-            <div class="ticket-item">
-              <p><span style="color: rgb(164, 164, 164);">Họ và tên:</span> <span style="color: black;">Lê Văn Quốc Huy</span></p>
-              <p><span style="color: rgb(164, 164, 164);">Số điện thoại:</span> <span style="color: black;">0123456789</span></p>
-              <p><span style="color: rgb(164, 164, 164);">Email:</span> <span style="color: black;">levanhuy06022001@gmail.com</span></p>
-            </div>
-
-            <div class="ticket-item">
-              <p><span style="color: rgb(164, 164, 164);">Tổng giá vé:</span> <span style="color: black;">500,000đ</span></p>
-              <p><span style="color: rgb(164, 164, 164);">PTTT:</span> <span style="color: black;">VietQR</span></p>
-              <p><span style="color: rgb(164, 164, 164);">Trạng thái:</span> <span style="color: #008e15;">Thanh toán thành công</span></p>
-            </div>
-
+  <div class="container-success">
+    <div class="success">
+      <img src="/images/checkmark.png" alt="" class="checkmark" />
+      <h4 style="color: #008e15">Mua vé xe thành công</h4>
+      <p>
+        Thông tin vé đã đặt được gửi về địa chỉ email
+        <span style="font-weight: bold">levanquochuy06022001@gmail.com</span>.
+        Vui lòng kiểm tra lại
+      </p>
+      <div class="in4-tickets">
+        <h5 style="color: #008e15">THÔNG TIN MUA VÉ</h5>
+        <div class="ticket-info">
+          <div class="ticket-item">
+            <p>
+              <span style="color: rgb(164, 164, 164)">Họ và tên:</span>
+              <span style="color: black">Lê Văn Quốc Huy</span>
+            </p>
+            <p>
+              <span style="color: rgb(164, 164, 164)">Số điện thoại:</span>
+              <span style="color: black">0123456789</span>
+            </p>
+            <p>
+              <span style="color: rgb(164, 164, 164)">Email:</span>
+              <span style="color: black">levanhuy06022001@gmail.com</span>
+            </p>
           </div>
-          <div class="tiket">
-            <div class="ticket-infor" ref="ticket">
-                <p style="color: red;">Mã vé E7GZF8 
-                  <button class="download-icon" @click="downloadTicket($refs.ticket)">
-                   <img src="/images/download.svg" alt="Download">
-                  </button>
-                </p>
-                <div class="code-qr">
-                    <img src="/images/QR.jpeg" alt="" class="picture-qr">
-                </div>
-                <div class="infor-ticket">
-                  <p><span style="color: rgb(164, 164, 164);">Tuyến xe:</span> <span style="color: #008e15;">Hà Nội - Đà Nẵng</span></p>
-                  <p><span style="color: rgb(164, 164, 164);">Thời gian:</span> <span style="color: #008e15;">10:00 AM, 25/12/2024</span></p>
-                  <p><span style="color: rgb(164, 164, 164);">Số ghế:</span> <span style="color: #008e15;">A12</span></p>
-                  <p><span style="color: rgb(164, 164, 164);">Điểm lên xe:</span> <span style="color: black;">Bến xe Mỹ Đình</span></p>
-                  <p><span style="color: rgb(164, 164, 164);">Giá vé:</span> <span style="color: black;">250,000đ</span></p>
-                </div>
-                <hr class="lane">
-                <div class="note-ticket" style="color: #008e15; font-size: 13px;">
-                  Mang mã vé đến văn phòng để đổi vé lên xe trước 
-                  giờ xuất bến ít nhất 30 phút.
-                </div>
-            </div>
 
-            <div class="ticket-infor" ref="ticket">
-                <p style="color: red;">Mã vé E7GZF8
-                  <button class="download-icon" @click="downloadTicket($refs.ticket)">
-                   <img src="/images/download.svg" alt="Download">
-                  </button>
-                </p>
-                <div class="code-qr">
-                    <img src="/images/QR.jpeg" alt="" class="picture-qr">
-                </div>
-                <div class="infor-ticket">
-                  <p><span style="color: rgb(164, 164, 164);">Tuyến xe:</span> <span style="color: #008e15;">Hà Nội - Đà Nẵng</span></p>
-                  <p><span style="color: rgb(164, 164, 164);">Thời gian:</span> <span style="color: #008e15;">10:00 AM, 25/12/2024</span></p>
-                  <p><span style="color: rgb(164, 164, 164);">Số ghế:</span> <span style="color: #008e15;">A13</span></p>
-                  <p><span style="color: rgb(164, 164, 164);">Điểm lên xe:</span> <span style="color: black;">Bến xe Mỹ Đình</span></p>
-                  <p><span style="color: rgb(164, 164, 164);">Giá vé:</span> <span style="color: black;">250,000đ</span></p>
-                </div>
-                <hr class="lane">
-                <div class="note-ticket" style="color: #008e15; font-size: 13px;">
-                  Mang mã vé đến văn phòng để đổi vé lên xe trước 
-                  giờ xuất bến ít nhất 30 phút.
-                </div>
+          <div class="ticket-item">
+            <p>
+              <span style="color: rgb(164, 164, 164)">Tổng giá vé:</span>
+              <span style="color: black">500,000đ</span>
+            </p>
+            <p>
+              <span style="color: rgb(164, 164, 164)">PTTT:</span>
+              <span style="color: black">VietQR</span>
+            </p>
+            <p>
+              <span style="color: rgb(164, 164, 164)">Trạng thái:</span>
+              <span style="color: #008e15">Thanh toán thành công</span>
+            </p>
+          </div>
+        </div>
+        <div class="tiket">
+          <div class="ticket-infor" ref="ticket">
+            <p style="color: red">
+              Mã vé E7GZF8
+              <button
+                class="download-icon"
+                @click="downloadTicket($refs.ticket)"
+              >
+                <img src="/images/download.svg" alt="Download" />
+              </button>
+            </p>
+            <div class="code-qr">
+              <img src="/images/QR.jpeg" alt="" class="picture-qr" />
             </div>
-            
+            <div class="infor-ticket">
+              <p>
+                <span style="color: rgb(164, 164, 164)">Tuyến xe:</span>
+                <span style="color: #008e15">Hà Nội - Đà Nẵng</span>
+              </p>
+              <p>
+                <span style="color: rgb(164, 164, 164)">Thời gian:</span>
+                <span style="color: #008e15">10:00 AM, 25/12/2024</span>
+              </p>
+              <p>
+                <span style="color: rgb(164, 164, 164)">Số ghế:</span>
+                <span style="color: #008e15">A12</span>
+              </p>
+              <p>
+                <span style="color: rgb(164, 164, 164)">Điểm lên xe:</span>
+                <span style="color: black">Bến xe Mỹ Đình</span>
+              </p>
+              <p>
+                <span style="color: rgb(164, 164, 164)">Giá vé:</span>
+                <span style="color: black">250,000đ</span>
+              </p>
+            </div>
+            <hr class="lane" />
+            <div class="note-ticket" style="color: #008e15; font-size: 13px">
+              Mang mã vé đến văn phòng để đổi vé lên xe trước giờ xuất bến ít
+              nhất 30 phút.
+            </div>
+          </div>
+
+          <div class="ticket-infor" ref="ticket">
+            <p style="color: red">
+              Mã vé E7GZF8
+              <button
+                class="download-icon"
+                @click="downloadTicket($refs.ticket)"
+              >
+                <img src="/images/download.svg" alt="Download" />
+              </button>
+            </p>
+            <div class="code-qr">
+              <img src="/images/QR.jpeg" alt="" class="picture-qr" />
+            </div>
+            <div class="infor-ticket">
+              <p>
+                <span style="color: rgb(164, 164, 164)">Tuyến xe:</span>
+                <span style="color: #008e15">Hà Nội - Đà Nẵng</span>
+              </p>
+              <p>
+                <span style="color: rgb(164, 164, 164)">Thời gian:</span>
+                <span style="color: #008e15">10:00 AM, 25/12/2024</span>
+              </p>
+              <p>
+                <span style="color: rgb(164, 164, 164)">Số ghế:</span>
+                <span style="color: #008e15">A13</span>
+              </p>
+              <p>
+                <span style="color: rgb(164, 164, 164)">Điểm lên xe:</span>
+                <span style="color: black">Bến xe Mỹ Đình</span>
+              </p>
+              <p>
+                <span style="color: rgb(164, 164, 164)">Giá vé:</span>
+                <span style="color: black">250,000đ</span>
+              </p>
+            </div>
+            <hr class="lane" />
+            <div class="note-ticket" style="color: #008e15; font-size: 13px">
+              Mang mã vé đến văn phòng để đổi vé lên xe trước giờ xuất bến ít
+              nhất 30 phút.
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </template>
-  
- 
+  </div>
+</template>
 
-  <script>
-  import html2canvas from 'html2canvas';
-  
-  export default {
-    methods: {
-      downloadTicket(element) {
-        html2canvas(element).then(canvas => {
-          // Tạo một link và tự động tải xuống hình ảnh
-          const link = document.createElement('a');
-          link.href = canvas.toDataURL('image/png');
-          link.download = 'ticket.png';
-          link.click();
-        });
-      }
-    }
-  }
-  </script>
+<script>
+import html2canvas from "html2canvas";
+
+export default {
+  methods: {
+    downloadTicket(element) {
+      html2canvas(element).then((canvas) => {
+        // Tạo một link và tự động tải xuống hình ảnh
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = "ticket.png";
+        link.click();
+      });
+    },
+  },
+};
+</script>
 
 <style>
-
 .download-icon {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  margin-left: 10px; 
+  margin-left: 10px;
 }
 
 .download-icon img {
@@ -261,5 +315,4 @@ h4 {
     align-items: flex-start;
   }
 }
-
 </style>

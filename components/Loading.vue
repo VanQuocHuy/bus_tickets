@@ -2,7 +2,12 @@
   <div class="loading-overlay">
     <div class="spinner"></div>
     <p class="loading-text">
-      <span v-for="(char, index) in characters" :key="index" :style="{animationDelay: `${index * 0.1}s`}" class="loading-char">
+      <span
+        v-for="(char, index) in characters"
+        :key="index"
+        :style="{ animationDelay: `${index * 0.1}s` }"
+        class="loading-char"
+      >
         {{ char }}
       </span>
     </p>
@@ -11,13 +16,13 @@
 
 <script>
 export default {
-  name: 'Loading',
+  name: "Loading",
   computed: {
     characters() {
-      return 'Loading...'.split('');
-    }
-  }
-}
+      return "Loading...".split("");
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -46,8 +51,12 @@ export default {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .loading-text {
@@ -63,7 +72,8 @@ export default {
 }
 
 @keyframes bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {

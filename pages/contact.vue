@@ -1,33 +1,36 @@
 <template>
   <div class="contact-container">
     <div class="contact-form">
-      <img src="/images/mail_send.svg" alt="Gửi thông tin liên hệ đến chúng tôi"> 
+      <img
+        src="/images/mail_send.svg"
+        alt="Gửi thông tin liên hệ đến chúng tôi"
+      />
       <h2>Gửi thông tin liên hệ đến chúng tôi</h2>
       <div class="infor">
         <form @submit.prevent="submitForm">
           <div class="form-group">
             <label for="name">Họ và Tên:</label>
-            <input type="text" id="name" v-model="name" required>
+            <input type="text" id="name" v-model="name" required />
           </div>
           <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" v-model="email" required>
+            <input type="email" id="email" v-model="email" required />
           </div>
           <div class="form-group">
             <label for="phone">Số Điện Thoại:</label>
-            <input type="tel" id="phone" v-model="phone" required>
+            <input type="tel" id="phone" v-model="phone" required />
           </div>
           <button type="submit">Gửi</button>
         </form>
       </div>
     </div>
-    
+
     <div class="contact-info">
       <h3>CÔNG TY CỔ PHẦN XE KHÁCH C-MART BUS LINES</h3>
       <p><strong>Email:</strong> c-mart@busline.com.vn</p>
       <p><strong>Địa chỉ:</strong> 200 Xuân Thủy, Quận Cẩm Lệ, TP. Đà Nẵng</p>
       <p><strong>Hotline:</strong> 1900 123 456</p>
-      <img src="/images/bus.jpg" alt="Nhà xe" class="company-image">
+      <img src="/images/bus.jpg" alt="Nhà xe" class="company-image" />
     </div>
   </div>
 </template>
@@ -36,18 +39,18 @@
 export default {
   data() {
     return {
-      name: '',
-      email: '',
-      phone: ''
+      name: "",
+      email: "",
+      phone: "",
     };
   },
   methods: {
     submitForm() {
-      console.log('Thông tin liên hệ:', this.name, this.email, this.phone);
-      alert('Thông tin của bạn đã được gửi!');
-    }
-  }
-}
+      console.log("Thông tin liên hệ:", this.name, this.email, this.phone);
+      alert("Thông tin của bạn đã được gửi!");
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -56,7 +59,7 @@ export default {
   justify-content: space-between;
   align-items: flex-start;
   margin-top: 3%;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 .contact-form {
@@ -157,7 +160,5 @@ button:hover {
   margin-top: 20px;
   max-width: 67%;
   border-radius: 10px;
-  
-  
 }
 </style>

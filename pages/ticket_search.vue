@@ -1,25 +1,31 @@
 <template>
   <div class="tracuu">
-   <h4>TRA CỨU THÔNG TIN ĐẶT VÉ</h4>
-   <div class="input-fields">
-      <input type="text" placeholder="Vui lòng nhập số điện thoại" class="input-field">
-      <input type="text" placeholder="Vui lòng nhập mã vé" class="input-field">
+    <h4>TRA CỨU THÔNG TIN ĐẶT VÉ</h4>
+    <div class="input-fields">
+      <input
+        type="text"
+        placeholder="Vui lòng nhập số điện thoại"
+        class="input-field"
+      />
+      <input
+        type="text"
+        placeholder="Vui lòng nhập mã vé"
+        class="input-field"
+      />
       <button class="search-button">Tra cứu</button>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-.tracuu{
+.tracuu {
   margin-top: 4%;
   text-align: center;
-  color:rgb(8, 83, 8) ;
+  color: rgb(8, 83, 8);
   margin-bottom: 4%;
 }
 .input-fields {
@@ -52,5 +58,5 @@ export default {
 .search-button:hover {
   background-color: rgb(246, 120, 85);
   color: white;
-}   
+}
 </style>
