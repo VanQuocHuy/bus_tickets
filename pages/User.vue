@@ -53,7 +53,7 @@
                     ? newAvatarUrl
                     : user?.data?.avatarUrl
                     ? user?.data?.avatarUrl
-                    : '/images/avatar-default.svg'
+                    : '/images/avatar-default.jpg'
                 "
                 alt="Avatar"
               />
