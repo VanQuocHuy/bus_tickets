@@ -53,7 +53,7 @@
                     ? newAvatarUrl
                     : user?.data?.avatarUrl
                     ? user?.data?.avatarUrl
-                    : '/images/avatar-default.jpg'
+                    : '/images/avatar-default.svg'
                 "
                 alt="Avatar"
               />
@@ -545,69 +545,6 @@ export default {
 </script>
 
 <style>
-/* Media Queries */
-@media (max-width: 768px) {
-  .content-tab {
-    flex-direction: column;
-  }
-
-  .tab-item {
-    margin-bottom: 10px;
-  }
-
-  .user-container-avatar {
-    width: 80px;
-    height: 80px;
-  }
-
-  .user-container-info-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .user-container-info-item input,
-  .user-container-info-item select {
-    width: 100%;
-    margin-top: 5px;
-  }
-
-  .list-tickets table {
-    display: block;
-    overflow-x: auto;
-  }
-
-  .list-tickets th,
-  .list-tickets td {
-    white-space: nowrap;
-  }
-}
-
-@media (max-width: 480px) {
-  .content-in4 {
-    padding: 10px;
-  }
-
-  .change-avatar-btn,
-  .user-container-update {
-    width: 100%;
-    font-size: 14px;
-  }
-
-  .user-container-info-item input,
-  .user-container-info-item select {
-    font-size: 14px;
-  }
-
-  .list-tickets button {
-    padding: 5px;
-    font-size: 12px;
-  }
-}
-.user-container-user {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
 .changes-success {
   border: none;
   background-color: #f86666;
@@ -870,6 +807,5 @@ export default {
   gap: 25px;
   background-color: white;
   margin-bottom: 3%;
-  width: 100%;
 }
 </style>
