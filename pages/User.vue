@@ -418,6 +418,8 @@ export default {
     };
   },
   created() {
+    console.log("hàm create run");
+
     if (process.client) {
       try {
         let user = JSON.parse(localStorage.getItem("user"));
@@ -437,8 +439,6 @@ export default {
       } catch (error) {
         console.error("Failed to parse user data:", error);
       }
-    } else {
-      console.log("serve side nè");
     }
   },
   computed: {
