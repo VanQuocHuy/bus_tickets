@@ -385,7 +385,7 @@ export default {
 
         L.polyline(route, { color: "blue" }).addTo(this.map);
       };
-      // document.head.appendChild(script);
+      document.head.appendChild(script);
     },
   },
   mounted() {
