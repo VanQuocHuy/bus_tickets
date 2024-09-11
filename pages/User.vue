@@ -423,9 +423,10 @@ export default {
         let user = JSON.parse(localStorage.getItem("user"));
         this.userId = JSON.parse(localStorage.getItem("user"))?.data._id;
         if (!user) {
+          console.log("khong người dùng: ", user);
           this.$router.push("/");
         } else {
-          console.log(user);
+          console.log("Có người dùng: ", user);
 
           this.$store.commit("userStore/SET_USER", user);
           this.name = user?.data?.fullName;
