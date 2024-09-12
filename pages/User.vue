@@ -53,7 +53,7 @@
                     ? newAvatarUrl
                     : user?.data?.avatarUrl
                     ? user?.data?.avatarUrl
-                    : '/images/avatar-default.svg'
+                    : '/images/avatar-default.jpg'
                 "
                 alt="Avatar"
               />
@@ -390,7 +390,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
   data() {
     return {
@@ -418,50 +417,26 @@ export default {
       showConfirmPassword: false,
     };
   },
-  async created() {
+  created() {
     if (process.client) {
-      const newData = await axios.post(
-        "https://babefood.io.vn/v1/bustickets/user/login-user",
-        {
-          email: "nguyenvanminh8864@gmail.com",
-          password: "cuongdaica@A",
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        this.userId = JSON.parse(localStorage.getItem("user"))?.data._id;
+        if (!user) {
+          this.$router.push("/");
+        } else {
+          this.$store.commit("userStore/SET_USER", user);
+          this.name = user?.data?.fullName;
+          this.phone = user?.data?.phone;
+          this.email = user?.data?.email;
+          this.sex = user?.data?.sex;
+          this.dateOfBirth = user?.data?.dateOfBirth;
+          this.address = user?.data?.address;
         }
-      );
-      console.log("all");
-
-      if (newData?.data.status) {
-        console.log("data success: ", newData);
-        this.$store.commit("userStore/SET_USER", newData.data);
-        this.name = newData?.data?.data?.fullName;
-        this.phone = newData?.data?.data?.phone;
-        this.email = newData?.data?.data?.email;
-        this.sex = newData?.data?.data?.sex;
-        this.dateOfBirth = newData?.data?.data?.dateOfBirth;
-        this.address = newData?.data?.data?.address;
-        this.userId = newData?.data?.data._id;
-      } else {
-        console.log("cook");
+      } catch (error) {
+        console.error("Failed to parse user data:", error);
       }
     }
-    // if (process.client) {
-    //   try {
-    //     const user = JSON.parse(localStorage.getItem("user"));
-    //     this.userId = JSON.parse(localStorage.getItem("user"))?.data._id;
-    //     if (!user) {
-    //       this.$router.push("/");
-    //     } else {
-    //       this.$store.commit("userStore/SET_USER", user);
-    //       this.name = user?.data?.fullName;
-    //       this.phone = user?.data?.phone;
-    //       this.email = user?.data?.email;
-    //       this.sex = user?.data?.sex;
-    //       this.dateOfBirth = user?.data?.dateOfBirth;
-    //       this.address = user?.data?.address;
-    //     }
-    //   } catch (error) {
-    //     console.error("Failed to parse user data:", error);
-    //   }
-    // }
   },
   computed: {
     user() {
