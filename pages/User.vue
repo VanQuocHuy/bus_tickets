@@ -181,9 +181,7 @@
               </div>
               <div class="user-container-info-item">
                 <label for="address">Số dư:</label>
-                <span>{{
-                  user?.data?.money.toLocaleString("vi-VN") + " VND"
-                }}</span>
+                <span>123</span>
               </div>
               <button class="user-container-update" @click="updateInfo">
                 Cập nhật
@@ -390,6 +388,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -397,18 +396,18 @@ export default {
       avatarUrl: "", // Avatar mặc định
       newAvatarUrl: null, // avatarmới
       selectedFile: null, //data ảnh
-      name: "",
-      phone: "",
-      email: "",
-      sex: "",
+      name: "0123",
+      phone: "0123",
+      email: "0123",
+      sex: "Nam",
       dateOfBirth: "",
-      address: "",
+      address: "123",
       isEditingPhone: false,
       isEditingName: false,
       isEditingEmail: false,
       isEditingDateOfBirth: false,
       isEditingAddress: false,
-      serId: null,
+      userId: "66e0f43692e9cdac6501f33b",
       oldPassword: "",
       newPassword: "",
       confirmPassword: "",
@@ -418,29 +417,26 @@ export default {
     };
   },
   created() {
-    console.log("Chạy hàm create()");
-    if (process.client) {
-      console.log("client side rendering");
-      try {
-        const user = JSON.parse(localStorage.getItem("user"));
-        this.userId = JSON.parse(localStorage.getItem("user"))?.data._id;
-        if (!user) {
-          this.$router.push("/");
-        } else {
-          this.$store.commit("userStore/SET_USER", user);
-          this.name = user?.data?.fullName;
-          this.phone = user?.data?.phone;
-          this.email = user?.data?.email;
-          this.sex = user?.data?.sex;
-          this.dateOfBirth = user?.data?.dateOfBirth;
-          this.address = user?.data?.address;
-        }
-      } catch (error) {
-        console.error("Failed to parse user data:", error);
-      }
-    } else {
-      console.log("serve side rendering");
-    }
+    // const user
+    // if (process.client) {
+    //   try {
+    //     const user = JSON.parse(localStorage.getItem("user"));
+    //     this.userId = JSON.parse(localStorage.getItem("user"))?.data._id;
+    //     if (!user) {
+    //       this.$router.push("/");
+    //     } else {
+    //       this.$store.commit("userStore/SET_USER", user);
+    //       this.name = user?.data?.fullName;
+    //       this.phone = user?.data?.phone;
+    //       this.email = user?.data?.email;
+    //       this.sex = user?.data?.sex;
+    //       this.dateOfBirth = user?.data?.dateOfBirth;
+    //       this.address = user?.data?.address;
+    //     }
+    //   } catch (error) {
+    //     console.error("Failed to parse user data:", error);
+    //   }
+    // }
   },
   computed: {
     user() {
