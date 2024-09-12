@@ -417,13 +417,13 @@ export default {
       showConfirmPassword: false,
     };
   },
-  mounted() {
+  created() {
     if (process.client) {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
         this.userId = JSON.parse(localStorage.getItem("user"))?.data._id;
         if (!user) {
-          // this.$router.push("/");
+          this.$router.push("/");
         } else {
           this.$store.commit("userStore/SET_USER", user);
           this.name = user?.data?.fullName;
