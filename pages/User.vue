@@ -417,7 +417,7 @@ export default {
       showConfirmPassword: false,
     };
   },
-  created() {
+  mounted() {
     if (process.client) {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
