@@ -46,17 +46,17 @@
           </div>
           <div class="edit-in4">
             <div class="user-container-img">
-              <!-- <img
+              <img
                 class="user-container-avatar"
                 :src="
                   newAvatarUrl
                     ? newAvatarUrl
                     : user?.data?.avatarUrl
                     ? user?.data?.avatarUrl
-                    : '/uploads/avatar-default.svg'
+                    : '/images/avatar-default.svg'
                 "
                 alt="Avatar"
-              /> -->
+              />
               <input
                 type="file"
                 ref="fileInput"
@@ -181,7 +181,9 @@
               </div>
               <div class="user-container-info-item">
                 <label for="address">Số dư:</label>
-                <span>123</span>
+                <span>{{
+                  user?.data?.money.toLocaleString("vi-VN") + " VND"
+                }}</span>
               </div>
               <button class="user-container-update" @click="updateInfo">
                 Cập nhật
@@ -396,18 +398,18 @@ export default {
       avatarUrl: "", // Avatar mặc định
       newAvatarUrl: null, // avatarmới
       selectedFile: null, //data ảnh
-      name: "0123",
-      phone: "0123",
-      email: "0123",
-      sex: "Nam",
+      name: "",
+      phone: "",
+      email: "",
+      sex: "",
       dateOfBirth: "",
-      address: "123",
+      address: "",
       isEditingPhone: false,
       isEditingName: false,
       isEditingEmail: false,
       isEditingDateOfBirth: false,
       isEditingAddress: false,
-      userId: "66e0f43692e9cdac6501f33b",
+      userId: null,
       oldPassword: "",
       newPassword: "",
       confirmPassword: "",
@@ -416,10 +418,31 @@ export default {
       showConfirmPassword: false,
     };
   },
-  created() {
-    console.log(123);
+  async created() {
+    if (process.client) {
+      const newData = await axios.post(
+        "https://babefood.io.vn/v1/bustickets/user/login-user",
+        {
+          email: "nguyenvanminh8864@gmail.com",
+          password: "cuongdaica@A",
+        }
+      );
+      console.log("all");
 
-    // const user
+      if (newData?.data.status) {
+        console.log("data success: ", newData);
+        this.$store.commit("userStore/SET_USER", newData.data);
+        this.name = newData?.data?.data?.fullName;
+        this.phone = newData?.data?.data?.phone;
+        this.email = newData?.data?.data?.email;
+        this.sex = newData?.data?.data?.sex;
+        this.dateOfBirth = newData?.data?.data?.dateOfBirth;
+        this.address = newData?.data?.data?.address;
+        this.userId = newData?.data?.data._id;
+      } else {
+        console.log("cook");
+      }
+    }
     // if (process.client) {
     //   try {
     //     const user = JSON.parse(localStorage.getItem("user"));
@@ -440,49 +463,51 @@ export default {
     //   }
     // }
   },
-  // computed: {
-  //   user() {
-  //     return this.$store.getters["userStore/user"];
-  //   },
-  //   loading() {
-  //     return this.$store.getters["userStore/loading"];
-  //   },
-  // },
+  computed: {
+    user() {
+      return this.$store.getters["userStore/user"];
+    },
+    loading() {
+      return this.$store.getters["userStore/loading"];
+    },
+  },
   methods: {
     async changePassword() {
-      alert("Vui lòng nhập đầy đủ thông tin mật khẩu.");
-      //   // Kiểm tra nếu các trường bị trống
-      //   if (!this.oldPassword || !this.newPassword || !this.confirmPassword) {
-      //     alert("Vui lòng nhập đầy đủ thông tin mật khẩu.");
-      //     return;
-      //   }
-      //   // Kiểm tra nếu mật khẩu mới và xác nhận không khớp
-      //   if (this.newPassword !== this.confirmPassword) {
-      //     alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
-      //     return;
-      //   }
-      //   try {
-      //     // Gọi API để đổi mật khẩu
-      //     const response = await this.$store.dispatch(
-      //       "userStore/changePassword",
-      //       {
-      //         oldPassword: this.oldPassword,
-      //         newPassword: this.newPassword,
-      //       }
-      //     );
-      //     // Kiểm tra phản hồi từ API
-      //     if (response.success) {
-      //       alert("Đổi mật khẩu thành công!");
-      //       this.oldPassword = "";
-      //       this.newPassword = "";
-      //       this.confirmPassword = "";
-      //     } else {
-      //       alert("Đổi mật khẩu thất bại: " + response.message);
-      //     }
-      //   } catch (error) {
-      //     alert("Có lỗi xảy ra, vui lòng thử lại sau.");
-      //     console.error("Error changing password:", error);
-      //   }
+      // Kiểm tra nếu các trường bị trống
+      if (!this.oldPassword || !this.newPassword || !this.confirmPassword) {
+        alert("Vui lòng nhập đầy đủ thông tin mật khẩu.");
+        return;
+      }
+
+      // Kiểm tra nếu mật khẩu mới và xác nhận không khớp
+      if (this.newPassword !== this.confirmPassword) {
+        alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
+        return;
+      }
+
+      try {
+        // Gọi API để đổi mật khẩu
+        const response = await this.$store.dispatch(
+          "userStore/changePassword",
+          {
+            oldPassword: this.oldPassword,
+            newPassword: this.newPassword,
+          }
+        );
+
+        // Kiểm tra phản hồi từ API
+        if (response.success) {
+          alert("Đổi mật khẩu thành công!");
+          this.oldPassword = "";
+          this.newPassword = "";
+          this.confirmPassword = "";
+        } else {
+          alert("Đổi mật khẩu thất bại: " + response.message);
+        }
+      } catch (error) {
+        alert("Có lỗi xảy ra, vui lòng thử lại sau.");
+        console.error("Error changing password:", error);
+      }
     },
     togglePassword(type) {
       if (type === "old") {
