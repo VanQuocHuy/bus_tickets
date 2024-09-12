@@ -418,7 +418,9 @@ export default {
     };
   },
   created() {
+    console.log("Chạy hàm create()");
     if (process.client) {
+      console.log("client side rendering");
       try {
         const user = JSON.parse(localStorage.getItem("user"));
         this.userId = JSON.parse(localStorage.getItem("user"))?.data._id;
@@ -436,6 +438,8 @@ export default {
       } catch (error) {
         console.error("Failed to parse user data:", error);
       }
+    } else {
+      console.log("serve side rendering");
     }
   },
   computed: {
