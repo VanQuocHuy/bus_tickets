@@ -46,17 +46,17 @@
           </div>
           <div class="edit-in4">
             <div class="user-container-img">
-              <img
+              <!-- <img
                 class="user-container-avatar"
                 :src="
                   newAvatarUrl
                     ? newAvatarUrl
                     : user?.data?.avatarUrl
                     ? user?.data?.avatarUrl
-                    : '/images/avatar-default.svg'
+                    : '/uploads/avatar-default.svg'
                 "
                 alt="Avatar"
-              />
+              /> -->
               <input
                 type="file"
                 ref="fileInput"
@@ -417,6 +417,8 @@ export default {
     };
   },
   created() {
+    console.log(123);
+
     // const user
     // if (process.client) {
     //   try {
@@ -438,51 +440,49 @@ export default {
     //   }
     // }
   },
-  computed: {
-    user() {
-      return this.$store.getters["userStore/user"];
-    },
-    loading() {
-      return this.$store.getters["userStore/loading"];
-    },
-  },
+  // computed: {
+  //   user() {
+  //     return this.$store.getters["userStore/user"];
+  //   },
+  //   loading() {
+  //     return this.$store.getters["userStore/loading"];
+  //   },
+  // },
   methods: {
     async changePassword() {
-      // Kiểm tra nếu các trường bị trống
-      if (!this.oldPassword || !this.newPassword || !this.confirmPassword) {
-        alert("Vui lòng nhập đầy đủ thông tin mật khẩu.");
-        return;
-      }
-
-      // Kiểm tra nếu mật khẩu mới và xác nhận không khớp
-      if (this.newPassword !== this.confirmPassword) {
-        alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
-        return;
-      }
-
-      try {
-        // Gọi API để đổi mật khẩu
-        const response = await this.$store.dispatch(
-          "userStore/changePassword",
-          {
-            oldPassword: this.oldPassword,
-            newPassword: this.newPassword,
-          }
-        );
-
-        // Kiểm tra phản hồi từ API
-        if (response.success) {
-          alert("Đổi mật khẩu thành công!");
-          this.oldPassword = "";
-          this.newPassword = "";
-          this.confirmPassword = "";
-        } else {
-          alert("Đổi mật khẩu thất bại: " + response.message);
-        }
-      } catch (error) {
-        alert("Có lỗi xảy ra, vui lòng thử lại sau.");
-        console.error("Error changing password:", error);
-      }
+      alert("Vui lòng nhập đầy đủ thông tin mật khẩu.");
+      //   // Kiểm tra nếu các trường bị trống
+      //   if (!this.oldPassword || !this.newPassword || !this.confirmPassword) {
+      //     alert("Vui lòng nhập đầy đủ thông tin mật khẩu.");
+      //     return;
+      //   }
+      //   // Kiểm tra nếu mật khẩu mới và xác nhận không khớp
+      //   if (this.newPassword !== this.confirmPassword) {
+      //     alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
+      //     return;
+      //   }
+      //   try {
+      //     // Gọi API để đổi mật khẩu
+      //     const response = await this.$store.dispatch(
+      //       "userStore/changePassword",
+      //       {
+      //         oldPassword: this.oldPassword,
+      //         newPassword: this.newPassword,
+      //       }
+      //     );
+      //     // Kiểm tra phản hồi từ API
+      //     if (response.success) {
+      //       alert("Đổi mật khẩu thành công!");
+      //       this.oldPassword = "";
+      //       this.newPassword = "";
+      //       this.confirmPassword = "";
+      //     } else {
+      //       alert("Đổi mật khẩu thất bại: " + response.message);
+      //     }
+      //   } catch (error) {
+      //     alert("Có lỗi xảy ra, vui lòng thử lại sau.");
+      //     console.error("Error changing password:", error);
+      //   }
     },
     togglePassword(type) {
       if (type === "old") {
