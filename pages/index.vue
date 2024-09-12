@@ -154,12 +154,12 @@ export default {
     // Chỉ chạy trên client-side, không chạy ở cmd của visual
     if (process.client) {
       try {
-        this.currentUser = JSON.parse(localStorage.getItem("user"))?.data;
-        if (this.currentUser?.role === "shipper") {
-          alert("Chuyển đến trang shipper");
-        } else if (this.currentUser?.role === "admin") {
-          alert("chuyển đến trang admin");
-        }
+        // this.currentUser = JSON.parse(localStorage.getItem("user"))?.data;
+        // if (this.currentUser?.role === "shipper") {
+        //   alert("Chuyển đến trang shipper");
+        // } else if (this.currentUser?.role === "admin") {
+        //   alert("chuyển đến trang admin");
+        // }
       } catch (error) {
         console.error("Failed to parse user data:", error);
       }
