@@ -112,6 +112,9 @@
                 >
                   <img src="/images/rename.svg" alt="Edit" />
                 </button>
+                <div v-if="phoneError" class="error-message">
+                  {{ phoneError }}
+                </div>
               </div>
 
               <div class="user-container-info-item">
@@ -131,6 +134,9 @@
                 >
                   <img src="/images/rename.svg" alt="Edit" />
                 </button>
+                <div v-if="emailError" class="error-message">
+                  {{ emailError }}
+                </div>
               </div>
 
               <div class="user-container-info-item">
@@ -415,8 +421,8 @@ export default {
       showOldPassword: false,
       showNewPassword: false,
       showConfirmPassword: false,
-      // phoneError: "",
-      // emailError: "",
+      phoneError: "",
+      emailError: "",
     };
   },
   created() {
@@ -535,9 +541,26 @@ export default {
         this.isEditingPhone = !this.isEditingPhone;
       }
     },
-    updateInfo() {
-      //update thông tin
-      alert("Cập nhật thành công");
+    async updateInfo() {
+      // Xóa các lỗi cũ
+      this.phoneError = "";
+      this.emailError = "";
+      // Kiểm tra định dạng số điện thoại
+      const phonePattern = /^[0-9]{10,11}$/;
+      // Kiểm tra định dạng email
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!phonePattern.test(this.phone)) {
+        alert("Số điện thoại không hợp lệ");
+      } else if (!emailPattern.test(this.email)) {
+        alert("Email không hợp lệ");
+      } else {
+        alert("Cập nhật thành công");
+      }
+      this.isEditingName = false;
+      this.isEditingPhone = false;
+      this.isEditingEmail = false;
+      this.isEditingDateOfBirth = false;
+      this.isEditingAddress = false;
     },
     async handleLogout() {
       await this.$store.dispatch("userStore/logout");
@@ -547,6 +570,11 @@ export default {
 </script>
 
 <style>
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
 .changes-success {
   border: none;
   background-color: #f86666;
