@@ -37,15 +37,15 @@
               >
             </li>
           </ul>
-          <NuxtLink to="/login" class="dn_dk" v-if="!user">
+          <NuxtLink to="/login" class="dn_dk" v-if="!user?.data">
             <img src="/images/profile.svg" alt="" class="icon-profile" /> Đăng
             nhập/Đăng ký
           </NuxtLink>
-          <NuxtLink to="/user" class="dn_dk" v-if="user">
+          <NuxtLink to="/user" class="dn_dk" v-if="user?.data">
             <img
               :src="
-                user?.data?.avatarUrl
-                  ? user?.data?.avatarUrl
+                user.data?.avatarUrl
+                  ? user.data?.avatarUrl
                   : '/images/avatar-default.jpg'
               "
               alt=""

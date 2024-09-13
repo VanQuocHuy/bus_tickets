@@ -415,15 +415,17 @@ export default {
       showOldPassword: false,
       showNewPassword: false,
       showConfirmPassword: false,
+      // phoneError: "",
+      // emailError: "",
     };
   },
   created() {
     if (process.client) {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
-        this.userId = JSON.parse(localStorage.getItem("user"))?.data._id;
-        if (!user) {
-          this.$router.push("/");
+        this.userId = JSON.parse(localStorage.getItem("user"))?.data?._id;
+        if (!this.userId) {
+          this.$router.push("/login");
         } else {
           this.$store.commit("userStore/SET_USER", user);
           this.name = user?.data?.fullName;
