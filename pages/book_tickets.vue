@@ -501,6 +501,7 @@ export default {
 .options-box input[type="radio"] {
   margin-right: 5px;
 }
+
 /* Navbar */
 .banner {
   position: absolute;

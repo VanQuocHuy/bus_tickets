@@ -98,6 +98,44 @@ export const actions = {
       commit("SET_LOADING", false);
     }
   },
+  async updateUser({ commit, state }, updatUser) {
+    commit("SET_LOADING", true);
+    commit("SET_ERROR", null);
+
+    try {
+      const axiosJWT = createAxios(state.user.data);
+
+      const res = await axiosJWT.put(
+        `https://babefood.io.vn/v1/bustickets/user/update-user/`,
+        updatUser,
+        {
+          headers: {
+            token: `Bearer ${state.user.data.accessToken}`,
+          },
+        }
+      );
+
+      if (res.data.status) {
+        const data = res.data.data;
+
+        const newData = {
+          status: true,
+          code: 200,
+          message: "Cập nhật thông tin thành công",
+          data: { ...data, accessToken: state.user.data.accessToken },
+        };
+
+        commit("SET_USER", newData);
+        alert(newData.message);
+        return newData.status;
+      }
+    } catch (error) {
+      alert(error.response.data.message);
+      commit("SET_ERROR", error.message);
+    } finally {
+      commit("SET_LOADING", false);
+    }
+  },
   async logout({ commit, state }) {
     commit("SET_LOADING", true);
     commit("SET_ERROR", null);

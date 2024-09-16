@@ -331,6 +331,7 @@ export default {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
+
 .search {
   width: 250px;
   height: 45px;

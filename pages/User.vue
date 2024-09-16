@@ -93,6 +93,9 @@
                 >
                   <img src="/images/rename.svg" alt="Edit" />
                 </button>
+                <div v-if="nameError" class="error-message">
+                  {{ nameError }}
+                </div>
               </div>
 
               <div class="user-container-info-item">
@@ -423,6 +426,7 @@ export default {
       showConfirmPassword: false,
       phoneError: "",
       emailError: "",
+      nameError: "",
     };
   },
   created() {
@@ -435,11 +439,18 @@ export default {
         } else {
           this.$store.commit("userStore/SET_USER", user);
           this.name = user?.data?.fullName;
-          this.phone = user?.data?.phone;
+          this.phone = user?.data?.phoneNumber;
           this.email = user?.data?.email;
           this.sex = user?.data?.sex;
-          this.dateOfBirth = user?.data?.dateOfBirth;
           this.address = user?.data?.address;
+
+          const date = new Date(user?.data?.dateOfBirth);
+          const day = String(date.getDate()).padStart(2, "0");
+          const month = String(date.getMonth() + 1).padStart(2, "0"); // Tháng bắt đầu từ 0
+          const year = date.getFullYear();
+
+          const formattedDate = `${year}-${month}-${day}`;
+          this.dateOfBirth = formattedDate;
         }
       } catch (error) {
         console.error("Failed to parse user data:", error);
@@ -468,28 +479,18 @@ export default {
         return;
       }
 
-      try {
-        // Gọi API để đổi mật khẩu
-        const response = await this.$store.dispatch(
-          "userStore/changePassword",
-          {
-            oldPassword: this.oldPassword,
-            newPassword: this.newPassword,
-          }
-        );
-
-        // Kiểm tra phản hồi từ API
-        if (response.success) {
-          alert("Đổi mật khẩu thành công!");
-          this.oldPassword = "";
-          this.newPassword = "";
-          this.confirmPassword = "";
-        } else {
-          alert("Đổi mật khẩu thất bại: " + response.message);
-        }
-      } catch (error) {
-        alert("Có lỗi xảy ra, vui lòng thử lại sau.");
-        console.error("Error changing password:", error);
+      const updatUser = {
+        id: this.userId,
+        password: this.oldPassword,
+        newPassword: this.newPassword,
+        rePassword: this.confirmPassword,
+      };
+      // Gọi API để đổi mật khẩu
+      const res = await this.$store.dispatch("userStore/updateUser", updatUser);
+      if (res) {
+        this.oldPassword = "";
+        this.newPassword = "";
+        this.confirmPassword = "";
       }
     },
     togglePassword(type) {
@@ -543,24 +544,43 @@ export default {
     },
     async updateInfo() {
       // Xóa các lỗi cũ
+      this.nameError = "";
       this.phoneError = "";
       this.emailError = "";
+      // Kiểm tra định dạng số họ tên
+      // const namePattern = /^[A-Za-z\s]+$/;
+      this.name = this.name.trim().replaceAll(/\s+/g, " ");
       // Kiểm tra định dạng số điện thoại
       const phonePattern = /^[0-9]{10,11}$/;
       // Kiểm tra định dạng email
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!phonePattern.test(this.phone)) {
+
+      if (this.name.length < 5 || this.name.length > 30) {
+        alert(" 'Họ và tên' không hợp lệ");
+      } else if (this.address.length < 5 || this.address.length > 30) {
+        alert(" 'Địa chỉ' không hợp lệ");
+      } else if (!phonePattern.test(this.phone)) {
         alert("Số điện thoại không hợp lệ");
       } else if (!emailPattern.test(this.email)) {
         alert("Email không hợp lệ");
       } else {
-        alert("Cập nhật thành công");
+        const updatUser = {
+          id: this.userId,
+          fullName: this.name,
+          phoneNumber: this.phone,
+          email: this.email,
+          sex: this.sex,
+          dateOfBirth: this.dateOfBirth,
+          address: this.address,
+        };
+        await this.$store.dispatch("userStore/updateUser", updatUser);
+
+        this.isEditingName = false;
+        this.isEditingPhone = false;
+        this.isEditingEmail = false;
+        this.isEditingDateOfBirth = false;
+        this.isEditingAddress = false;
       }
-      this.isEditingName = false;
-      this.isEditingPhone = false;
-      this.isEditingEmail = false;
-      this.isEditingDateOfBirth = false;
-      this.isEditingAddress = false;
     },
     async handleLogout() {
       await this.$store.dispatch("userStore/logout");

@@ -514,7 +514,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: auto;
+  margin-top: 1%;
   transition: transform 0.3s ease;
 }
 .switch-button:hover {
