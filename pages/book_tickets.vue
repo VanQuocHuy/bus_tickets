@@ -35,6 +35,9 @@
             class="field"
             v-model="departure"
           />
+          <span class="error-message" v-if="errors.departure">{{
+            errors.departure
+          }}</span>
         </div>
         <button class="switch-button" @click="switchFields">
           <img src="/images/switch.svg" alt="Switch" />
@@ -48,6 +51,9 @@
             class="field"
             v-model="destination"
           />
+          <span class="error-message" v-if="errors.destination">{{
+            errors.destination
+          }}</span>
         </div>
         <div class="field-group">
           <label for="departure-date">Ngày đi</label>
@@ -57,6 +63,9 @@
             class="field"
             v-model="departureDate"
           />
+          <span class="error-message" v-if="errors.departureDate">{{
+            errors.departureDate
+          }}</span>
         </div>
         <div class="field-group" v-if="isRoundTrip === 'round-trip'">
           <label for="return-date">Ngày về</label>
@@ -77,9 +86,12 @@
             class="field"
             v-model="ticketNumber"
           />
+          <span class="error-message" v-if="errors.ticketNumber">{{
+            errors.ticketNumber
+          }}</span>
         </div>
       </div>
-      <button class="search">Tìm chuyến xe</button>
+      <button class="search" @click="searchBus">Tìm chuyến xe</button>
     </div>
 
     <div class="Find-trip">
@@ -100,15 +112,15 @@
             </label>
             <label>
               <input type="checkbox" value="morning" />
-              Buổi sáng 06:00 - 12:00 (3)
+              Buổi sáng 06:00 - 12:00 (0)
             </label>
             <label>
               <input type="checkbox" value="afternoon" />
-              Buổi chiều 12:00 - 18:00 (1)
+              Buổi chiều 12:00 - 18:00 (0)
             </label>
             <label>
               <input type="checkbox" value="evening" />
-              Buổi tối 18:00 - 24:00 (2)
+              Buổi tối 18:00 - 24:00 (0)
             </label>
           </div>
         </div>
@@ -185,18 +197,64 @@ export default {
       returnDate: "",
       ticketNumber: "",
       isRoundTrip: "one-way",
+      ticketNumber: 1,
+      errors: {
+        departure: "",
+        destination: "",
+        departureDate: "",
+        ticketNumber: "",
+      },
     };
   },
   methods: {
+    searchBus() {
+      // Kiểm tra trước khi tìm chuyến xe
+      if (this.validateForm()) {
+        // Gọi API tìm chuyến xe hoặc xử lý logic tìm kiếm ở đây
+        alert("Tìm kiếm chuyến xe thành công!");
+      }
+    },
+    validateForm() {
+      let isValid = true;
+
+      // Kiểm tra điểm đi
+      if (!this.departure) {
+        this.errors.departure = "Vui lòng nhập điểm đi";
+        isValid = false;
+      } else {
+        this.errors.departure = ""; // Xóa lỗi nếu trường hợp hợp lệ
+      }
+
+      // Kiểm tra điểm đến
+      if (!this.destination) {
+        this.errors.destination = "Vui lòng nhập điểm đến";
+        isValid = false;
+      } else {
+        this.errors.destination = "";
+      }
+
+      // Kiểm tra ngày đi
+      if (!this.departureDate) {
+        this.errors.departureDate = "Vui lòng chọn ngày đi";
+        isValid = false;
+      } else {
+        this.errors.departureDate = "";
+      }
+
+      // Kiểm tra số lượng vé
+      if (this.ticketNumber <= 0) {
+        this.errors.ticketNumber = "Số vé phải lớn hơn 0";
+        isValid = false;
+      } else {
+        this.errors.ticketNumber = "";
+      }
+
+      return isValid; // Trả về true nếu tất cả trường hợp đều hợp lệ
+    },
     toggleRoundTrip() {
       if (this.isRoundTrip === "one-way") {
         this.returnDate = "";
       }
-    },
-    switchFields() {
-      const temp = this.departure;
-      this.departure = this.destination;
-      this.destination = temp;
     },
     switchFields() {
       const temp = this.departure;
@@ -208,6 +266,12 @@ export default {
 </script>
 
 <style>
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
 .select-flight {
   width: 150px;
   height: 35px;
@@ -348,6 +412,7 @@ export default {
 .times input[type="checkbox"] {
   accent-color: #f94d0a;
   margin-right: 10px;
+  cursor: pointer;
 }
 .times label {
   display: flex;
